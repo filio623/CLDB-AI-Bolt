@@ -575,8 +575,6 @@ const CompareCampaigns: React.FC<{
           // Show warning if job types are different (and both exist)
           if (primaryJobType && comparisonJobType && primaryJobType !== comparisonJobType) {
             return (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-6">
-                <div className="flex items-center space-x-2">
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6">
                 <div className="flex items-center space-x-2">
                   <svg className="h-4 w-4 text-yellow-500 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
