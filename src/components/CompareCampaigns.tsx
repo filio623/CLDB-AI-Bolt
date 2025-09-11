@@ -12,11 +12,11 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
   return (
     <div className="relative">
       <div
-        className="w-5 h-5 bg-gray-400 hover:bg-gray-600 rounded-full flex items-center justify-center cursor-help transition-colors"
+        className="w-5 h-5 bg-black hover:bg-gray-800 rounded-full flex items-center justify-center cursor-help transition-colors"
         onMouseEnter={() => setIsVisible(true)}
         onMouseLeave={() => setIsVisible(false)}
       >
-        <Info className="w-3 h-3 text-white" />
+        <span className="text-white text-xs font-bold">i</span>
       </div>
       {isVisible && (
         <div className="absolute top-6 right-0 w-64 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50">
