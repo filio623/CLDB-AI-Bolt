@@ -1,9 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Search, BarChart3 } from 'lucide-react';
+import { Search, BarChart3, Info } from 'lucide-react';
 import AnalysisSection from './AnalysisSection';
 import { Client, CampaignSummary, CompareResponse, KPIMetricData, apiService, APIError, formatCampaignName, formatDuration } from '../services/api';
 import campaignPlaceholder from '../assets/images/campaign-placeholder.png';
 import postcardThumbnail from '../assets/images/postcard2 save.png';
+
+// Tooltip component for KPI cards
+const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  return (
+    <div className="relative">
+      <div
+        className="w-5 h-5 bg-gray-400 hover:bg-gray-600 rounded-full flex items-center justify-center cursor-help transition-colors"
+        onMouseEnter={() => setIsVisible(true)}
+        onMouseLeave={() => setIsVisible(false)}
+      >
+        <Info className="w-3 h-3 text-white" />
+      </div>
+      {isVisible && (
+        <div className="absolute top-6 right-0 w-64 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50">
+          <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+          {content}
+        </div>
+      )}
+    </div>
+  );
+};
 
 interface CompareCampaignsProps {
   selectedClient: Client | null;
@@ -123,12 +146,24 @@ const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) =
       'attributions': 'Attributions'
     };
 
+    const kpiTooltips: Record<string, string> = {
+      'ad_displays': 'Total number of times your campaign ads were displayed to potential customers across all channels.',
+      'engagements': 'Total interactions with your campaign content including clicks, likes, shares, and other engagement actions.',
+      'visitors': 'Number of unique visitors who came to your website or landing page as a result of this campaign.',
+      'leads': 'Qualified potential customers who provided their contact information or expressed interest in your products/services.',
+      'attributions': 'Conversions and sales that can be directly attributed to this specific campaign through tracking.'
+    };
+
     const displayName = kpiDisplayNames[kpiName] || kpiName;
+    const tooltipContent = kpiTooltips[kpiName] || `Information about ${displayName}`;
 
     // Loading state - during analysis
     if (isAnalyzing) {
       return (
-        <div key={kpiName} className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+        <div key={kpiName} className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center relative">
+          <div className="absolute top-3 right-3">
+            <KPITooltip content={tooltipContent} />
+          </div>
           <h3 className="text-base font-semibold text-gray-900 mb-3">{displayName}</h3>
           <p className="text-2xl font-bold text-blue-400 mb-2">
             <span className="animate-pulse">...</span>
@@ -142,7 +177,10 @@ const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) =
     // No data state - before analysis
     if (!kpiData) {
       return (
-        <div key={kpiName} className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+        <div key={kpiName} className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center relative">
+          <div className="absolute top-3 right-3">
+            <KPITooltip content={tooltipContent} />
+          </div>
           <h3 className="text-base font-semibold text-gray-900 mb-3">{displayName}</h3>
           <p className="text-2xl font-bold text-gray-400 mb-2">---</p>
           <p className="text-gray-400 font-medium text-sm mb-2">---%</p>
@@ -159,7 +197,10 @@ const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) =
     const sign = kpiData.change_percent >= 0 ? '+' : '';
 
     return (
-      <div key={kpiName} className={`${bgColor} border ${borderColor} rounded-xl p-4 text-center`}>
+      <div key={kpiName} className={`${bgColor} border ${borderColor} rounded-xl p-4 text-center relative`}>
+        <div className="absolute top-3 right-3">
+          <KPITooltip content={tooltipContent} />
+        </div>
         <h3 className="text-base font-semibold text-gray-900 mb-3">{displayName}</h3>
         <p className={`text-2xl font-bold ${percentColor} mb-3`}>
           {sign}{kpiData.change_percent.toFixed(1)}%
@@ -478,7 +519,10 @@ const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) =
               : compareResult 
                 ? 'bg-green-50 border-green-200' 
                 : 'bg-gray-50 border-gray-200'
-          } border rounded-xl p-6 text-center`}>
+          } border rounded-xl p-6 text-center relative`}>
+            <div className="absolute top-4 right-4">
+              <KPITooltip content="Average number of ad impressions generated per piece of mail sent. Higher values indicate better digital amplification of your direct mail campaign." />
+            </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-4">Impressions per Piece</h3>
             {isAnalyzing ? (
               <>
@@ -520,7 +564,10 @@ const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) =
               : compareResult 
                 ? 'bg-red-50 border-red-200' 
                 : 'bg-gray-50 border-gray-200'
-          } border rounded-xl p-6 text-center`}>
+          } border rounded-xl p-6 text-center relative`}>
+            <div className="absolute top-4 right-4">
+              <KPITooltip content="Total number of meaningful interactions with your campaign content across all digital channels including clicks, likes, shares, comments, and other engagement actions." />
+            </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-4">Engagements</h3>
             {isAnalyzing ? (
               <>
