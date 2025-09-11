@@ -566,6 +566,43 @@ const CompareCampaigns: React.FC<{
         </div>
       )}
 
+      {/* Job Type Mismatch Warning */}
+      {primaryCampaign && comparisonCampaign && (
+        (() => {
+          const primaryJobType = getCampaignBasicInfo(primaryCampaign).jobType;
+          const comparisonJobType = getCampaignBasicInfo(comparisonCampaign).jobType;
+          
+          // Show warning if job types are different (and both exist)
+          if (primaryJobType && comparisonJobType && primaryJobType !== comparisonJobType) {
+            return (
+              <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-8">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <svg className="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-amber-800">
+                      Campaign Comparison Warning
+                    </h3>
+                    <div className="mt-2 text-sm text-amber-700">
+                      <p>
+                        These campaigns may not be directly comparable as they use different job types: 
+                        <span className="font-semibold"> {primaryJobType}</span> vs 
+                        <span className="font-semibold"> {comparisonJobType}</span>. 
+                        For more accurate comparisons, consider selecting campaigns with the same job type.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+          return null;
+        })()
+      )}
+
       {/* KPI Performance Row */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-gray-900 mb-6 flex items-center space-x-2">
