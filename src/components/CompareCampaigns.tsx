@@ -8,19 +8,80 @@ import postcardThumbnail from '../assets/images/postcard2 save.png';
 // Tooltip component for KPI cards
 const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [position, setPosition] = useState({ x: 'center', y: 'above' });
+  const tooltipRef = React.useRef<HTMLDivElement>(null);
+  const iconRef = React.useRef<HTMLDivElement>(null);
+
+  const updatePosition = () => {
+    if (!tooltipRef.current || !iconRef.current) return;
+    
+    const iconRect = iconRef.current.getBoundingClientRect();
+    const tooltipRect = tooltipRef.current.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    
+    let x = 'center';
+    let y = 'above';
+    
+    // Check horizontal positioning
+    const tooltipWidth = 256; // w-64 = 256px
+    const iconCenterX = iconRect.left + iconRect.width / 2;
+    
+    if (iconCenterX - tooltipWidth / 2 < 10) {
+      // Too close to left edge, align to left
+      x = 'left';
+    } else if (iconCenterX + tooltipWidth / 2 > viewportWidth - 10) {
+      // Too close to right edge, align to right
+      x = 'right';
+    }
+    
+    // Check vertical positioning
+    if (iconRect.top < 100) {
+      // Too close to top, show below
+      y = 'below';
+    }
+    
+    setPosition({ x, y });
+  };
+
+  const handleMouseEnter = () => {
+    setIsVisible(true);
+    // Small delay to ensure tooltip is rendered before calculating position
+    setTimeout(updatePosition, 10);
+  };
 
   return (
     <div className="relative">
       <div
+        ref={iconRef}
         className="w-4 h-4 bg-gray-600 hover:bg-gray-700 rounded-full flex items-center justify-center cursor-help transition-colors"
-        onMouseEnter={() => setIsVisible(true)}
+        onMouseEnter={handleMouseEnter}
         onMouseLeave={() => setIsVisible(false)}
       >
         <span className="text-white text-xs font-bold">i</span>
       </div>
       {isVisible && (
         <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-64 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50">
-          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
+          ref={tooltipRef}
+          className={`absolute w-64 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50 ${
+            position.y === 'above' ? 'bottom-6' : 'top-6'
+          } ${
+            position.x === 'center' 
+              ? 'left-1/2 transform -translate-x-1/2' 
+              : position.x === 'left'
+                ? 'left-0'
+                : 'right-0'
+          <div className={`absolute w-2 h-2 bg-gray-900 rotate-45 ${
+            position.y === 'above' 
+              ? '-bottom-1' 
+              : '-top-1'
+          } ${
+            position.x === 'center' 
+              ? 'left-1/2 transform -translate-x-1/2' 
+              : position.x === 'left'
+                ? 'left-4'
+                : 'right-4'
+          }`}></div>
           {content}
         </div>
       )}
