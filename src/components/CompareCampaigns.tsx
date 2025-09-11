@@ -12,14 +12,14 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
   return (
     <div className="relative">
       <div
-        className="w-5 h-5 bg-black hover:bg-gray-800 rounded-full flex items-center justify-center cursor-help transition-colors"
+        className="w-4 h-4 bg-gray-800 hover:bg-gray-700 rounded-full flex items-center justify-center cursor-help transition-colors"
         onMouseEnter={() => setIsVisible(true)}
         onMouseLeave={() => setIsVisible(false)}
       >
         <span className="text-white text-xs font-bold">i</span>
       </div>
       {isVisible && (
-        <div className="absolute top-6 right-0 w-64 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50">
+        <div className="absolute top-5 right-0 w-64 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50">
           <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-45"></div>
           {content}
         </div>
@@ -520,7 +520,7 @@ const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) =
                 ? 'bg-green-50 border-green-200' 
                 : 'bg-gray-50 border-gray-200'
           } border rounded-xl p-6 text-center relative`}>
-            <div className="absolute top-4 right-4">
+            <div className="absolute top-3 right-3">
               <KPITooltip content="Average number of ad impressions generated per piece of mail sent. Higher values indicate better digital amplification of your direct mail campaign." />
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-4">Impressions per Piece</h3>
@@ -565,7 +565,7 @@ const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) =
                 ? 'bg-red-50 border-red-200' 
                 : 'bg-gray-50 border-gray-200'
           } border rounded-xl p-6 text-center relative`}>
-            <div className="absolute top-4 right-4">
+            <div className="absolute top-3 right-3">
               <KPITooltip content="Total number of meaningful interactions with your campaign content across all digital channels including clicks, likes, shares, comments, and other engagement actions." />
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-4">Engagements</h3>
