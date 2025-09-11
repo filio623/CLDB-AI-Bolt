@@ -9,6 +9,12 @@
 
 // Auto-detect API base URL based on environment
 const getAPIBaseURL = (): string => {
+  // For bolt.new: check if ngrok URL is set in localStorage
+  const ngrokURL = localStorage.getItem('NGROK_API_URL');
+  if (ngrokURL) {
+    return `${ngrokURL}/api/v1`;
+  }
+  
   // Check if we're in development (localhost) or production
   const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
   
@@ -22,6 +28,21 @@ const getAPIBaseURL = (): string => {
 };
 
 const API_BASE_URL = getAPIBaseURL();
+
+// Default headers for all requests (including ngrok bypass)
+const getDefaultHeaders = () => {
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  // Add ngrok bypass header if using ngrok URL
+  const ngrokURL = localStorage.getItem('NGROK_API_URL');
+  if (ngrokURL) {
+    headers['ngrok-skip-browser-warning'] = 'true';
+  }
+  
+  return headers;
+};
 
 // ========== TYPE DEFINITIONS ==========
 // These match exactly the backend Pydantic models
@@ -249,7 +270,9 @@ export const apiService = {
    */
   async getClients(): Promise<Client[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/clients`);
+      const response = await fetch(`${API_BASE_URL}/clients`, {
+        headers: getDefaultHeaders()
+      });
       return await handleResponse<Client[]>(response);
     } catch (error) {
       if (error instanceof APIError) {
