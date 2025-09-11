@@ -93,29 +93,16 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
 
 const CompareCampaigns: React.FC<{
   selectedClient: Client | null;
-  campaigns: CampaignSummary[];
-  setCampaigns: (campaigns: CampaignSummary[]) => void;
-  primaryCampaign: CampaignSummary | null;
-  setPrimaryCampaign: (campaign: CampaignSummary | null) => void;
-  comparisonCampaign: CampaignSummary | null;
-  setComparisonCampaign: (campaign: CampaignSummary | null) => void;
-  similarCampaigns: CampaignSummary[];
-  setSimilarCampaigns: (campaigns: CampaignSummary[]) => void;
-  compareResult: CompareResponse | null;
-  setCompareResult: (result: CompareResponse | null) => void;
 }> = ({
-  selectedClient,
-  campaigns,
-  setCampaigns,
-  primaryCampaign,
-  setPrimaryCampaign,
-  comparisonCampaign,
-  setComparisonCampaign,
-  similarCampaigns,
-  setSimilarCampaigns,
-  compareResult,
-  setCompareResult
+  selectedClient
 }) => {
+  // Internal state management
+  const [campaigns, setCampaigns] = useState<CampaignSummary[]>([]);
+  const [primaryCampaign, setPrimaryCampaign] = useState<CampaignSummary | null>(null);
+  const [comparisonCampaign, setComparisonCampaign] = useState<CampaignSummary | null>(null);
+  const [similarCampaigns, setSimilarCampaigns] = useState<CampaignSummary[]>([]);
+  const [compareResult, setCompareResult] = useState<CompareResponse | null>(null);
+
   // Loading states
   const [isLoadingCampaigns, setIsLoadingCampaigns] = useState(false);
   const [isLoadingSimilar, setIsLoadingSimilar] = useState(false);
