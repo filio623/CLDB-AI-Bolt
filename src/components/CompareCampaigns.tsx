@@ -479,7 +479,7 @@ const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) =
                 ? 'bg-green-50 border-green-200' 
                 : 'bg-gray-50 border-gray-200'
           } border rounded-xl p-6 text-center`}>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Impressions per Piece</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Impressions per Piece</h3>
             {isAnalyzing ? (
               <>
                 <p className="text-3xl font-bold text-blue-400 mb-3">
@@ -521,7 +521,7 @@ const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) =
                 ? 'bg-red-50 border-red-200' 
                 : 'bg-gray-50 border-gray-200'
           } border rounded-xl p-6 text-center`}>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Engagements</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Engagements</h3>
             {isAnalyzing ? (
               <>
                 <p className="text-3xl font-bold text-blue-400 mb-3">
