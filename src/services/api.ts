@@ -27,8 +27,6 @@ const getAPIBaseURL = (): string => {
   }
 };
 
-const API_BASE_URL = getAPIBaseURL();
-
 // Default headers for all requests (including ngrok bypass)
 const getDefaultHeaders = () => {
   const headers: Record<string, string> = {
@@ -270,7 +268,7 @@ export const apiService = {
    */
   async getClients(): Promise<Client[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/clients`, {
+      const response = await fetch(`${getAPIBaseURL()}/clients`, {
         headers: getDefaultHeaders()
       });
       return await handleResponse<Client[]>(response);
@@ -288,7 +286,9 @@ export const apiService = {
    */
   async getCampaignsByClient(clientId: number): Promise<CampaignSummary[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/campaigns/by-client/${clientId}`);
+      const response = await fetch(`${getAPIBaseURL()}/campaigns/by-client/${clientId}`, {
+        headers: getDefaultHeaders()
+      });
       return await handleResponse<CampaignSummary[]>(response);
     } catch (error) {
       if (error instanceof APIError) {
@@ -307,8 +307,10 @@ export const apiService = {
     durationTolerance: number = 2.0
   ): Promise<CampaignSummary[]> {
     try {
-      const url = `${API_BASE_URL}/campaigns/${campaignId}/similar-duration?duration_tolerance=${durationTolerance}`;
-      const response = await fetch(url);
+      const url = `${getAPIBaseURL()}/campaigns/${campaignId}/similar-duration?duration_tolerance=${durationTolerance}`;
+      const response = await fetch(url, {
+        headers: getDefaultHeaders()
+      });
       return await handleResponse<CampaignSummary[]>(response);
     } catch (error) {
       if (error instanceof APIError) {
@@ -324,11 +326,9 @@ export const apiService = {
    */
   async compareCampaigns(request: CompareRequest): Promise<CompareResponse> {
     try {
-      const response = await fetch(`${API_BASE_URL}/compare`, {
+      const response = await fetch(`${getAPIBaseURL()}/compare`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getDefaultHeaders(),
         body: JSON.stringify(request),
       });
       return await handleResponse<CompareResponse>(response);
@@ -346,11 +346,9 @@ export const apiService = {
    */
   async benchmarkCampaign(request: BenchmarkRequest): Promise<BenchmarkResponse> {
     try {
-      const response = await fetch(`${API_BASE_URL}/industry-benchmark`, {
+      const response = await fetch(`${getAPIBaseURL()}/industry-benchmark`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getDefaultHeaders(),
         body: JSON.stringify(request),
       });
       return await handleResponse<BenchmarkResponse>(response);
@@ -368,11 +366,9 @@ export const apiService = {
    */
   async calculateROI(request: ROIRequest): Promise<ROIResponse> {
     try {
-      const response = await fetch(`${API_BASE_URL}/calculate-roi`, {
+      const response = await fetch(`${getAPIBaseURL()}/calculate-roi`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getDefaultHeaders(),
         body: JSON.stringify(request),
       });
       return await handleResponse<ROIResponse>(response);
@@ -410,9 +406,13 @@ export const apiService = {
         formData.append('additional_costs', additionalCosts.toString());
       }
 
-      const response = await fetch(`${API_BASE_URL}/calculate-roi-file`, {
+      const headers = getDefaultHeaders();
+      // Remove Content-Type for FormData - browser will set it with boundary
+      delete headers['Content-Type'];
+      
+      const response = await fetch(`${getAPIBaseURL()}/calculate-roi-file`, {
         method: 'POST',
-        // Don't set Content-Type header - let browser set it with boundary for FormData
+        headers: headers,
         body: formData,
       });
       return await handleResponse<ROIResponse>(response);
@@ -430,7 +430,10 @@ export const apiService = {
    */
   async healthCheck(): Promise<{ status: string }> {
     try {
-      const response = await fetch(`${API_BASE_URL.replace('/api/v1', '')}/health`);
+      const baseUrl = getAPIBaseURL().replace('/api/v1', '');
+      const response = await fetch(`${baseUrl}/health`, {
+        headers: getDefaultHeaders()
+      });
       return await handleResponse<{ status: string }>(response);
     } catch (error) {
       throw new APIError(`API health check failed: ${error instanceof Error ? error.message : 'Network error'}`);
