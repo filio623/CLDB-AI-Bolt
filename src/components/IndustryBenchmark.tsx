@@ -189,7 +189,7 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
         {/* Main Content Area */}
         <div className="lg:col-span-2">
           {/* Campaign Overview */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-fit">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full">
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-10 h-10 bg-gradient-to-r from-orange-600 to-yellow-600 rounded-lg flex items-center justify-center">
                 <Trophy className="w-5 h-5 text-white" />
@@ -200,13 +200,13 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
               <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 border border-orange-200 shadow-sm">
                 <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center space-x-2">
                   <Building2 className="w-5 h-5 text-orange-600" />
                   <span>Campaign Details</span>
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <div className="flex items-center justify-between py-2 border-b border-orange-200">
                     <span className="text-sm font-medium text-gray-600">Campaign</span>
                     <span className="text-sm font-semibold text-gray-900">
@@ -244,14 +244,14 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
                   <Award className="w-5 h-5 text-blue-600" />
                   <span>Industry Position Summary</span>
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <div className="text-center p-4 bg-white rounded-lg border border-blue-200">
                     <p className="text-sm font-medium text-gray-600 mb-2">Overall Industry Grade</p>
                     <div className="inline-flex items-center px-4 py-2 rounded-full text-lg font-bold bg-orange-100 text-orange-800 border border-orange-300">
                       {benchmarkResult?.overall_industry_grade || '---'}
                     </div>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <div className="flex items-center justify-between py-2 border-b border-blue-200">
                       <span className="text-sm font-medium text-gray-600">Industry Percentile</span>
                       <span className="text-sm font-semibold text-blue-700">
