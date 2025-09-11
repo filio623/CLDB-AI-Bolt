@@ -81,28 +81,20 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
               : position.x === 'left'
                 ? 'left-4'
                 : 'right-4'
-          }`}></div>
-          {content}
-        </div>
-      )}
-    </div>
-  );
-};
-
-interface CompareCampaignsProps {
-  selectedClient: Client | null;
-}
-
-const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) => {
-  // Compare tab specific state
-  const [campaigns, setCampaigns] = useState<CampaignSummary[]>([]);
-  const [similarCampaigns, setSimilarCampaigns] = useState<CampaignSummary[]>([]);
-  const [primaryCampaign, setPrimaryCampaign] = useState<CampaignSummary | null>(null);
-  const [comparisonCampaign, setComparisonCampaign] = useState<CampaignSummary | null>(null);
-  const [compareResult, setCompareResult] = useState<CompareResponse | null>(null);
-
-  // Loading states
-  const [isLoadingCampaigns, setIsLoadingCampaigns] = useState(false);
+          }`}>
+            <div className={`absolute w-2 h-2 bg-gray-900 rotate-45 ${
+              position.y === 'above' 
+                ? '-bottom-1' 
+                : '-top-1'
+            } ${
+              position.x === 'center' 
+                ? 'left-1/2 transform -translate-x-1/2' 
+                : position.x === 'left'
+                  ? 'left-4'
+                  : 'right-4'
+            }`}></div>
+            {content}
+          </div>
   const [isLoadingSimilar, setIsLoadingSimilar] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
