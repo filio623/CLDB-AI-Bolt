@@ -658,7 +658,7 @@ const CompareCampaigns: React.FC<{
             <div className="absolute top-3 right-3">
               <KPITooltip content="Total number of meaningful interactions with your campaign content across all digital channels including clicks, likes, shares, comments, and other engagement actions." />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Engagements</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Engagement Rate</h3>
             {isAnalyzing ? (
               <>
                 <p className="text-3xl font-bold text-blue-400 mb-3">
