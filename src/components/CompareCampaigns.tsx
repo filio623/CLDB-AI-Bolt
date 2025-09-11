@@ -260,12 +260,12 @@ const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) =
     const sign = kpiData.change_percent >= 0 ? '+' : '';
 
     return (
-      <div key={kpiName} className={\`${bgColor} border ${borderColor} rounded-xl p-4 text-center relative`}>
+      <div key={kpiName} className={`${bgColor} border ${borderColor} rounded-xl p-4 text-center relative`}>
         <div className="absolute top-3 right-3">
           <KPITooltip content={tooltipContent} />
         </div>
         <h3 className="text-base font-semibold text-gray-900 mb-3">{displayName}</h3>
-        <p className={\`text-2xl font-bold ${percentColor} mb-3`}>
+        <p className={`text-2xl font-bold ${percentColor} mb-3`}>
           {sign}{kpiData.change_percent.toFixed(1)}%
         </p>
         <div className="flex items-center justify-center space-x-2 mb-2">
@@ -576,7 +576,7 @@ const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) =
         {/* Main KPI Cards - Larger */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Impressions per Piece Card */}
-          <div className={\`${
+          <div className={`${
             isAnalyzing 
               ? 'bg-blue-50 border-blue-200' 
               : compareResult 
@@ -621,7 +621,7 @@ const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) =
           </div>
 
           {/* Engagements Card */}
-          <div className={\`${
+          <div className={`${
             isAnalyzing 
               ? 'bg-blue-50 border-blue-200' 
               : compareResult 
