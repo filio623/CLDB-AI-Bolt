@@ -468,6 +468,98 @@ const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) =
           <BarChart3 className="w-5 h-5 text-blue-600" />
           <span>KPI Performance Changes</span>
         </h2>
+        
+        {/* Main KPI Cards - Larger */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Impressions per Piece Card */}
+          <div className={`${
+            isAnalyzing 
+              ? 'bg-blue-50 border-blue-200' 
+              : compareResult 
+                ? 'bg-green-50 border-green-200' 
+                : 'bg-gray-50 border-gray-200'
+          } border rounded-xl p-6 text-center`}>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Impressions per Piece</h3>
+            {isAnalyzing ? (
+              <>
+                <p className="text-3xl font-bold text-blue-400 mb-3">
+                  <span className="animate-pulse">...</span>
+                </p>
+                <p className="text-blue-400 font-medium text-base mb-3">Analyzing...</p>
+                <p className="text-sm text-blue-500">Please wait</p>
+              </>
+            ) : compareResult ? (
+              <>
+                <p className="text-3xl font-bold text-green-700 mb-4">+12.3%</p>
+                <div className="flex items-center justify-center space-x-3 mb-3">
+                  <div className="w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-bold text-white">A</span>
+                  </div>
+                  <p className="text-xl font-bold text-gray-900">2.45</p>
+                </div>
+                <div className="flex items-center justify-center space-x-3">
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: '#987D7C' }}>
+                    <span className="text-xs font-bold text-white">B</span>
+                  </div>
+                  <p className="text-lg font-semibold text-gray-700">2.18</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="text-3xl font-bold text-gray-400 mb-3">---</p>
+                <p className="text-gray-400 font-medium text-base mb-3">---%</p>
+                <p className="text-sm text-gray-400">Select campaigns to analyze</p>
+              </>
+            )}
+          </div>
+
+          {/* Engagements Card */}
+          <div className={`${
+            isAnalyzing 
+              ? 'bg-blue-50 border-blue-200' 
+              : compareResult 
+                ? 'bg-red-50 border-red-200' 
+                : 'bg-gray-50 border-gray-200'
+          } border rounded-xl p-6 text-center`}>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Engagements</h3>
+            {isAnalyzing ? (
+              <>
+                <p className="text-3xl font-bold text-blue-400 mb-3">
+                  <span className="animate-pulse">...</span>
+                </p>
+                <p className="text-blue-400 font-medium text-base mb-3">Analyzing...</p>
+                <p className="text-sm text-blue-500">Please wait</p>
+              </>
+            ) : compareResult ? (
+              <>
+                <p className="text-3xl font-bold text-red-700 mb-4">-8.7%</p>
+                <div className="flex items-center justify-center space-x-3 mb-3">
+                  <div className="w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-bold text-white">A</span>
+                  </div>
+                  <p className="text-xl font-bold text-gray-900">1,247</p>
+                </div>
+                <div className="flex items-center justify-center space-x-3">
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: '#987D7C' }}>
+                    <span className="text-xs font-bold text-white">B</span>
+                  </div>
+                  <p className="text-lg font-semibold text-gray-700">1,365</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="text-3xl font-bold text-gray-400 mb-3">---</p>
+                <p className="text-gray-400 font-medium text-base mb-3">---%</p>
+                <p className="text-sm text-gray-400">Select campaigns to analyze</p>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Secondary KPI Cards - Smaller */}
+        <div className="mb-4">
+          <h3 className="text-base font-medium text-gray-700 mb-4">Additional Metrics</h3>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {(() => {
             const kpiData = getKPIData();
