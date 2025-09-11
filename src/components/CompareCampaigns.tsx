@@ -61,7 +61,7 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
         <span className="text-white text-xs font-bold">i</span>
       </div>
       {isVisible && (
-        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-64 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50">
+        <div
           ref={tooltipRef}
           className={`absolute w-64 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50 ${
             position.y === 'above' ? 'bottom-6' : 'top-6'
@@ -71,6 +71,8 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
               : position.x === 'left'
                 ? 'left-0'
                 : 'right-0'
+          }`}
+        >
           <div className={`absolute w-2 h-2 bg-gray-900 rotate-45 ${
             position.y === 'above' 
               ? '-bottom-1' 
@@ -81,20 +83,28 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
               : position.x === 'left'
                 ? 'left-4'
                 : 'right-4'
-          }`}>
-            <div className={`absolute w-2 h-2 bg-gray-900 rotate-45 ${
-              position.y === 'above' 
-                ? '-bottom-1' 
-                : '-top-1'
-            } ${
-              position.x === 'center' 
-                ? 'left-1/2 transform -translate-x-1/2' 
-                : position.x === 'left'
-                  ? 'left-4'
-                  : 'right-4'
-            }`}></div>
-            {content}
-          </div>
+          }`}></div>
+          {content}
+        </div>
+      )}
+    </div>
+  );
+};
+
+interface CompareCampaignsProps {
+  selectedClient: Client | null;
+}
+
+const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) => {
+  // Compare tab specific state
+  const [campaigns, setCampaigns] = useState<CampaignSummary[]>([]);
+  const [similarCampaigns, setSimilarCampaigns] = useState<CampaignSummary[]>([]);
+  const [primaryCampaign, setPrimaryCampaign] = useState<CampaignSummary | null>(null);
+  const [comparisonCampaign, setComparisonCampaign] = useState<CampaignSummary | null>(null);
+  const [compareResult, setCompareResult] = useState<CompareResponse | null>(null);
+
+  // Loading states
+  const [isLoadingCampaigns, setIsLoadingCampaigns] = useState(false);
   const [isLoadingSimilar, setIsLoadingSimilar] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
@@ -250,12 +260,12 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
     const sign = kpiData.change_percent >= 0 ? '+' : '';
 
     return (
-      <div key={kpiName} className={`${bgColor} border ${borderColor} rounded-xl p-4 text-center relative`}>
+      <div key={kpiName} className={\`${bgColor} border ${borderColor} rounded-xl p-4 text-center relative`}>
         <div className="absolute top-3 right-3">
           <KPITooltip content={tooltipContent} />
         </div>
         <h3 className="text-base font-semibold text-gray-900 mb-3">{displayName}</h3>
-        <p className={`text-2xl font-bold ${percentColor} mb-3`}>
+        <p className={\`text-2xl font-bold ${percentColor} mb-3`}>
           {sign}{kpiData.change_percent.toFixed(1)}%
         </p>
         <div className="flex items-center justify-center space-x-2 mb-2">
@@ -566,7 +576,7 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
         {/* Main KPI Cards - Larger */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Impressions per Piece Card */}
-          <div className={`${
+          <div className={\`${
             isAnalyzing 
               ? 'bg-blue-50 border-blue-200' 
               : compareResult 
@@ -611,7 +621,7 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
           </div>
 
           {/* Engagements Card */}
-          <div className={`${
+          <div className={\`${
             isAnalyzing 
               ? 'bg-blue-50 border-blue-200' 
               : compareResult 
