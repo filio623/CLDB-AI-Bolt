@@ -19,7 +19,7 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
         <span className="text-white text-xs font-bold">i</span>
       </div>
       {isVisible && (
-        <div className="absolute top-5 right-0 w-64 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50">
+        <div className="absolute top-4 right-0 w-64 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50">
           <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-45"></div>
           {content}
         </div>
