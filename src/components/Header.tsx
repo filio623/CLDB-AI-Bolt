@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart3, TrendingUp, Zap, Target, Trophy, ChevronDown, Building2 } from 'lucide-react';
+import { BarChart3, TrendingUp, Zap, Target, Trophy, ChevronDown, Building2, Calculator } from 'lucide-react';
 import { apiService, Client, APIError } from '../services/api';
 
 interface HeaderProps {
@@ -43,6 +43,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, selectedClient,
     { id: 'compare', label: 'Compare Campaigns', icon: BarChart3 },
     { id: 'benchmark', label: 'Industry Benchmark', icon: Trophy },
     { id: 'roi', label: 'Enhanced ROI', icon: TrendingUp },
+    { id: 'advanced-roi', label: 'Advanced ROI', icon: Calculator },
     { id: 'performance', label: 'Performance Review', icon: Zap },
     { id: 'improvements', label: 'Improvements', icon: Target },
   ];

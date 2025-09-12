@@ -3,6 +3,7 @@ import Header from './components/Header';
 import CompareCampaigns from './components/CompareCampaigns';
 import IndustryBenchmark from './components/IndustryBenchmark';
 import EnhancedROI from './components/EnhancedROI';
+import AdvancedROI from './components/AdvancedROI';
 import PerformanceReview from './components/PerformanceReview';
 import Improvements from './components/Improvements';
 import { Client } from './services/api';
@@ -17,6 +18,8 @@ function App() {
     switch (activeTab) {
       case 'roi':
         return <EnhancedROI selectedClient={selectedClient} />;
+      case 'advanced-roi':
+        return <AdvancedROI selectedClient={selectedClient} />;
       case 'benchmark':
         return <IndustryBenchmark selectedClient={selectedClient} />;
       case 'performance':
