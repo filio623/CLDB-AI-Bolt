@@ -360,115 +360,6 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
               </div>
             ) : (
               <div className="text-center py-8">
-
-          {/* AI Analysis and Additional Sections - Only show when we have campaign results */}
-          {campaignResults && (
-            <div className="space-y-6 mt-6">
-              {/* AI Analysis Section */}
-              <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
-                  <Lightbulb className="w-5 h-5 text-purple-600" />
-                  <span>AI Campaign Analysis</span>
-                </h3>
-                <div className="space-y-3">
-                  <div className="bg-white rounded-lg p-3 border border-purple-200">
-                    <p className="text-sm font-medium text-gray-900 mb-1">Performance Assessment</p>
-                    <p className="text-sm text-gray-700">
-                      Your {campaignResults.roiPercentage.toFixed(1)}% ROI significantly exceeds typical direct mail benchmarks of 15-25%, 
-                      indicating strong campaign targeting and customer response.
-                    </p>
-                  </div>
-                  <div className="bg-white rounded-lg p-3 border border-purple-200">
-                    <p className="text-sm font-medium text-gray-900 mb-1">Customer Matching Insights</p>
-                    <p className="text-sm text-gray-700">
-                      {campaignResults.matchRate}% match rate suggests {
-                        parseFloat(campaignResults.matchRate) > 2 
-                          ? 'excellent data quality and strong campaign attribution' 
-                          : 'room for improvement in data matching - consider address standardization'
-                      }.
-                    </p>
-                  </div>
-                  <div className="bg-white rounded-lg p-3 border border-purple-200">
-                    <p className="text-sm font-medium text-gray-900 mb-1">Revenue per Customer</p>
-                    <p className="text-sm text-gray-700">
-                      Average revenue of ${(campaignResults.revenue / campaignResults.matchedCustomers).toLocaleString()} 
-                      per matched customer indicates strong customer value and effective targeting.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Performance Metrics */}
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
-                  <TrendingUp className="w-5 h-5 text-green-600" />
-                  <span>Key Performance Metrics</span>
-                </h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-3 bg-green-50 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-1">Revenue per Piece</p>
-                    <p className="text-lg font-bold text-green-700">
-                      ${(campaignResults.revenue / campaignResults.totalMailedCustomers).toFixed(2)}
-                    </p>
-                  </div>
-                  <div className="text-center p-3 bg-blue-50 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-1">Cost per Acquisition</p>
-                    <p className="text-lg font-bold text-blue-700">
-                      ${(campaignResults.cost / campaignResults.matchedCustomers).toFixed(2)}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Recommendations */}
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
-                  <Award className="w-5 h-5 text-orange-600" />
-                  <span>AI Recommendations</span>
-                </h3>
-                <div className="space-y-2">
-                  {campaignResults.roiPercentage > 100 ? (
-                    <div className="flex items-start space-x-2">
-                      <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-gray-700">
-                        <strong>Scale Success:</strong> Consider increasing budget allocation to similar campaigns with this performance level.
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="flex items-start space-x-2">
-                      <AlertTriangle className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-gray-700">
-                        <strong>Optimize Performance:</strong> Review targeting criteria and creative elements to improve conversion rates.
-                      </p>
-                    </div>
-                  )}
-                  
-                  {parseFloat(campaignResults.matchRate) < 2 ? (
-                    <div className="flex items-start space-x-2">
-                      <AlertTriangle className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-gray-700">
-                        <strong>Improve Data Quality:</strong> Consider address standardization and data cleansing to increase match rates.
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="flex items-start space-x-2">
-                      <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-gray-700">
-                        <strong>Excellent Tracking:</strong> Your data quality enables accurate ROI attribution - maintain current processes.
-                      </p>
-                    </div>
-                  )}
-                  
-                  <div className="flex items-start space-x-2">
-                    <Lightbulb className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-gray-700">
-                      <strong>Future Analysis:</strong> Track customer lifetime value to understand long-term campaign impact beyond initial sales.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
                 <Calculator className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-500">Enter cost and revenue values to calculate ROI</p>
               </div>
@@ -784,113 +675,141 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
                     </div>
                   </div>
                 </div>
-                {/* AI Analysis Section */}
-                <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
-                    <Lightbulb className="w-5 h-5 text-purple-600" />
-                    <span>AI Campaign Analysis</span>
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="bg-white rounded-lg p-3 border border-purple-200">
-                      <p className="text-sm font-medium text-gray-900 mb-1">Performance Assessment</p>
-                      <p className="text-sm text-gray-700">
-                        Your {campaignResults.roiPercentage.toFixed(1)}% ROI significantly exceeds typical direct mail benchmarks of 15-25%, 
-                        indicating strong campaign targeting and customer response.
-                      </p>
-                    </div>
-                    <div className="bg-white rounded-lg p-3 border border-purple-200">
-                      <p className="text-sm font-medium text-gray-900 mb-1">Customer Matching Insights</p>
-                      <p className="text-sm text-gray-700">
-                        {campaignResults.matchRate}% match rate suggests {
-                          parseFloat(campaignResults.matchRate) > 2 
-                            ? 'excellent data quality and strong campaign attribution' 
-                            : 'room for improvement in data matching - consider address standardization'
-                        }.
-                      </p>
-                    </div>
-                    <div className="bg-white rounded-lg p-3 border border-purple-200">
-                      <p className="text-sm font-medium text-gray-900 mb-1">Revenue per Customer</p>
-                      <p className="text-sm text-gray-700">
-                        Average revenue of ${(campaignResults.revenue / campaignResults.matchedCustomers).toLocaleString()} 
-                        per matched customer indicates strong customer value and effective targeting.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {/* Performance Metrics */}
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
-                    <TrendingUp className="w-5 h-5 text-green-600" />
-                    <span>Key Performance Metrics</span>
-                  </h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-3 bg-green-50 rounded-lg">
-                      <p className="text-sm text-gray-600 mb-1">Revenue per Piece</p>
-                      <p className="text-lg font-bold text-green-700">
-                        ${(campaignResults.revenue / campaignResults.totalMailedCustomers).toFixed(2)}
-                      </p>
-                    </div>
-                    <div className="text-center p-3 bg-blue-50 rounded-lg">
-                      <p className="text-sm text-gray-600 mb-1">Cost per Acquisition</p>
-                      <p className="text-lg font-bold text-blue-700">
-                        ${(campaignResults.cost / campaignResults.matchedCustomers).toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {/* Recommendations */}
-                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
-                    <Award className="w-5 h-5 text-orange-600" />
-                    <span>AI Recommendations</span>
-                  </h3>
-                  <div className="space-y-2">
-                    {campaignResults.roiPercentage > 100 ? (
-                      <div className="flex items-start space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <p className="text-sm text-gray-700">
-                          <strong>Scale Success:</strong> Consider increasing budget allocation to similar campaigns with this performance level.
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="flex items-start space-x-2">
-                        <AlertTriangle className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <p className="text-sm text-gray-700">
-                          <strong>Optimize Performance:</strong> Review targeting criteria and creative elements to improve conversion rates.
-                        </p>
-                      </div>
-                    )}
-                    
-                    {parseFloat(campaignResults.matchRate) < 2 ? (
-                      <div className="flex items-start space-x-2">
-                        <AlertTriangle className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                        <p className="text-sm text-gray-700">
-                          <strong>Improve Data Quality:</strong> Consider address standardization and data cleansing to increase match rates.
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="flex items-start space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <p className="text-sm text-gray-700">
-                          <strong>Excellent Tracking:</strong> Your data quality enables accurate ROI attribution - maintain current processes.
-                        </p>
-                      </div>
-                    )}
-                    
-                    <div className="flex items-start space-x-2">
-                      <Lightbulb className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-gray-700">
-                        <strong>Future Analysis:</strong> Track customer lifetime value to understand long-term campaign impact beyond initial sales.
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </>
             ) : (
-              <div className="text-center py-8">
-                <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500 mb-2">Upload sales data and select campaign</p>
-                <p className="text-sm text-gray-400">Results will show customer matching and ROI analysis</p>
+              <div className="space-y-6">
+                {/* Your ROI Section */}
+                <div className="mb-6">
+                  <h3 className="font-semibold text-gray-900 mb-4 flex items-center space-x-2">
+                    <span>Your Campaign ROI:</span>
+                  </h3>
+                  
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="text-center">
+                        <p className="text-sm text-gray-600 mb-1">ROI Percentage</p>
+                        <p className="text-3xl font-bold text-purple-700">0.0%</p>
+                        <div className="flex items-center justify-center space-x-1 mt-1">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          <span className="text-sm font-medium text-blue-600">📈 Awaiting Data</span>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-sm text-gray-600 mb-1">Profit</p>
+                        <p className="text-3xl font-bold text-gray-900">$0</p>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p className="text-gray-600">Total Cost:</p>
+                        <p className="font-semibold text-gray-900">$0</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Matched Revenue:</p>
+                        <p className="font-semibold text-gray-900">$0</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Customer Matching Results */}
+                <div className="mb-6">
+                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
+                    <Users className="w-5 h-5 text-purple-600" />
+                    <span>Customer Matching Results:</span>
+                  </h3>
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p className="text-gray-600">Customers Matched:</p>
+                        <p className="font-semibold text-gray-900">0</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Match Rate:</p>
+                        <p className="font-semibold text-gray-900">0.0%</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Explanation */}
+                <div className="mb-6">
+                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
+                    <span>Explanation:</span>
+                  </h3>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <p className="text-gray-700">
+                      Campaign ROI calculated: $0 matched revenue - $0 cost = $0 profit (0.0% ROI)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Data Information */}
+                <div className="mb-6">
+                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
+                    <span>Data Information:</span>
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                      <div className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                        📊
+                      </div>
+                      <p className="text-sm text-gray-700">
+                        <strong>Data Source:</strong> Campaign-Matched Customer Analysis (High Accuracy)
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                        ℹ️
+                      </div>
+                      <p className="text-sm text-gray-700">
+                        Upload sales data and select campaign to see customer matching and ROI analysis
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Enhanced Insights */}
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-4 flex items-center space-x-2">
+                    <Lightbulb className="w-5 h-5 text-yellow-600" />
+                    <span>Campaign ROI Insights:</span>
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+                        1
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900 mb-1">Customer Attribution Analysis</p>
+                        <p className="text-sm text-gray-700">Match your sales data to campaign mail lists for precise ROI attribution and customer insights.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3 p-4 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+                        2
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900 mb-1">Time-Period Filtering</p>
+                        <p className="text-sm text-gray-700">Sales data will be filtered to match your campaign timeframe for accurate performance measurement.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                      <div className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+                        3
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900 mb-1">Advanced Analytics</p>
+                        <p className="text-sm text-gray-700">Get detailed insights on customer matching rates, revenue per piece, and campaign effectiveness.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
