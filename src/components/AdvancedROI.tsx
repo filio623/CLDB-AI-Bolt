@@ -430,32 +430,6 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
                   </div>
                 </div>
 
-                {/* Data Information */}
-                <div className="mb-6">
-                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
-                    <span>Data Information:</span>
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                      <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
-                        📊
-                      </div>
-                      <p className="text-sm text-gray-700">
-                        <strong>Data Source:</strong> Manual Input (High Accuracy)
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-center space-x-3 p-3 bg-green-50 border border-green-200 rounded-lg">
-                      <div className="w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
-                        ✓
-                      </div>
-                      <p className="text-sm text-gray-700">
-                        Simple, accurate ROI calculation focused on what matters to you
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Enhanced Insights */}
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-4 flex items-center space-x-2">
@@ -878,31 +852,6 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
                   </div>
                 </div>
 
-                {/* Data Information */}
-                <div className="mb-6">
-                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
-                    <span>Data Information:</span>
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                      <div className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
-                        📊
-                      </div>
-                      <p className="text-sm text-gray-700">
-                        <strong>Data Source:</strong> Campaign-Matched Customer Analysis (High Accuracy)
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-center space-x-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                      <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
-                        ℹ️
-                      </div>
-                      <p className="text-sm text-gray-700">
-                        Upload sales data and select campaign to see customer matching and ROI analysis
-                      </p>
-                    </div>
-                  </div>
-                </div>
 
                 {/* Enhanced Insights */}
                 <div>
