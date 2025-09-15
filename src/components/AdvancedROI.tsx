@@ -359,9 +359,142 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
                 </div>
               </div>
             ) : (
-              <div className="text-center py-8">
-                <Calculator className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500">Enter cost and revenue values to calculate ROI</p>
+              <div className="space-y-6">
+                {/* Your ROI Section */}
+                <div className="mb-6">
+                  <h3 className="font-semibold text-gray-900 mb-4 flex items-center space-x-2">
+                    <span>Your ROI:</span>
+                  </h3>
+                  
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="text-center">
+                        <p className="text-sm text-gray-600 mb-1">ROI Percentage</p>
+                        <p className="text-3xl font-bold text-green-700">0.0%</p>
+                        <div className="flex items-center justify-center space-x-1 mt-1">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          <span className="text-sm font-medium text-blue-600">📈 Awaiting Data</span>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-sm text-gray-600 mb-1">Profit</p>
+                        <p className="text-3xl font-bold text-gray-900">$0</p>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p className="text-gray-600">Total Cost:</p>
+                        <p className="font-semibold text-gray-900">$0</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Total Revenue:</p>
+                        <p className="font-semibold text-gray-900">$0</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Cost Breakdown */}
+                <div className="mb-6">
+                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
+                    <span>Cost Breakdown:</span>
+                  </h3>
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div className="grid grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <p className="text-gray-600">Campaign Cost:</p>
+                        <p className="font-semibold text-gray-900">$0</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Cost of Goods:</p>
+                        <p className="font-semibold text-gray-900">$0</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Additional Costs:</p>
+                        <p className="font-semibold text-gray-900">$0</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Explanation */}
+                <div className="mb-6">
+                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
+                    <span>Explanation:</span>
+                  </h3>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <p className="text-gray-700">
+                      ROI calculated: $0 revenue - $0 cost = $0 profit (0.0% ROI)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Data Information */}
+                <div className="mb-6">
+                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
+                    <span>Data Information:</span>
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                      <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                        📊
+                      </div>
+                      <p className="text-sm text-gray-700">
+                        <strong>Data Source:</strong> Manual Input (High Accuracy)
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                        ✓
+                      </div>
+                      <p className="text-sm text-gray-700">
+                        Simple, accurate ROI calculation focused on what matters to you
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Enhanced Insights */}
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-4 flex items-center space-x-2">
+                    <Lightbulb className="w-5 h-5 text-yellow-600" />
+                    <span>Simple ROI Insights:</span>
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+                        1
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900 mb-1">Comprehensive Cost Analysis</p>
+                        <p className="text-sm text-gray-700">Track campaign costs, cost of goods, and additional expenses for complete ROI visibility.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3 p-4 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+                        2
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900 mb-1">Instant Calculation</p>
+                        <p className="text-sm text-gray-700">Get immediate ROI results with detailed cost breakdown and profit analysis.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                      <div className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+                        3
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900 mb-1">Performance Benchmarking</p>
+                        <p className="text-sm text-gray-700">Compare your ROI against industry standards to gauge campaign effectiveness.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
