@@ -514,7 +514,8 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
                 <p className="text-sm text-gray-500">Matching customers to mail list</p>
               </div>
             ) : campaignResults ? (
-              <div className="space-y-6">
+              <>
+                <div className="space-y-6">
                 <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
                   <div className="text-center mb-4">
                     <p className="text-sm text-gray-600 mb-1">Campaign ROI</p>
@@ -566,14 +567,9 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
                 </div>
 
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">Campaign Context:</h3>
-                  <div className="space-y-1 text-sm text-gray-700">
-                    <p><span className="font-medium">Campaign:</span> {campaignResults.campaignName}</p>
-                    <p><span className="font-medium">Duration:</span> {campaignResults.campaignDuration}</p>
-                    <p><span className="font-medium">Total Mailed:</span> {campaignResults.totalMailedCustomers.toLocaleString()} customers</p>
-                  </div>
-                </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Explanation:</h3>
                   <p className="text-gray-700 text-sm">{campaignResults.explanation}</p>
+                </div>
                 </div>
 
                 {/* AI Analysis Section */}
@@ -609,7 +605,6 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
                     </div>
                   </div>
                 </div>
-              </div>
                 {/* Performance Metrics */}
                 <div className="bg-white border border-gray-200 rounded-lg p-4">
                   <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
@@ -631,7 +626,6 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
                     </div>
                   </div>
                 </div>
-            ) : (
                 {/* Recommendations */}
                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                   <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
@@ -679,6 +673,8 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
                     </div>
                   </div>
                 </div>
+              </>
+            ) : (
               <div className="text-center py-8">
                 <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-500 mb-2">Upload sales data and select campaign</p>
@@ -692,6 +688,4 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
   );
 };
 
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">Explanation:</h3>
 export default AdvancedROI;
