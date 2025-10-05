@@ -655,7 +655,7 @@ const CompareCampaigns: React.FC<{
                       {analysis.structural_differences.filter(diff => diff.comparability_concern).map((diff, idx) => (
                         <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200">
                           <div className="p-5">
-                            <div className="flex items-center gap-3 mb-4 flex-wrap">
+                            <div className="flex items-center gap-3 mb-5 pb-4 border-b border-gray-200">
                               <h5 className="font-bold text-lg text-gray-900">
                                 {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
                               </h5>
@@ -675,7 +675,7 @@ const CompareCampaigns: React.FC<{
                               </div>
 
                               {diff.comparability_concern && (
-                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${warningStyle.badgeColor} uppercase tracking-wide ml-6`}>
+                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${warningStyle.badgeColor} uppercase tracking-wide ml-auto`}>
                                   Concern
                                 </span>
                               )}
