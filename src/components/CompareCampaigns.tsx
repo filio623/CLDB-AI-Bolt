@@ -91,25 +91,28 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
   );
 };
 
-const formatComparisonValue = (value: string, factor: string): string => {
+const formatComparisonValue = (value: string | number | null, factor: string): string => {
+  if (value === null || value === undefined) return 'N/A';
+
+  const valueStr = String(value);
   const lowerFactor = factor.toLowerCase();
 
   if (lowerFactor === 'campaign_duration') {
-    const numValue = parseInt(value);
+    const numValue = parseInt(valueStr);
     return `${numValue} ${numValue === 1 ? 'day' : 'days'}`;
   }
 
   if (lowerFactor === 'total_pieces_mailed') {
-    const numValue = parseInt(value.replace(/,/g, ''));
+    const numValue = parseInt(valueStr.replace(/,/g, ''));
     return `${numValue.toLocaleString()} pcs`;
   }
 
   if (lowerFactor === 'number_of_mailings') {
-    const numValue = parseInt(value);
+    const numValue = parseInt(valueStr);
     return `${numValue} ${numValue === 1 ? 'mailing' : 'mailings'}`;
   }
 
-  return value;
+  return valueStr;
 };
 
 const CompareCampaigns: React.FC<{
