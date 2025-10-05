@@ -675,40 +675,31 @@ const CompareCampaigns: React.FC<{
                               </div>
 
                               {diff.comparability_concern && (
-                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${warningStyle.badgeColor} uppercase tracking-wide`}>
+                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${warningStyle.badgeColor} uppercase tracking-wide ml-6`}>
                                   Concern
                                 </span>
                               )}
                             </div>
 
-                            <div className="bg-gradient-to-br from-indigo-50 via-blue-50 to-cyan-50 rounded-xl p-4 border-2 border-indigo-200 shadow-sm">
-                              <div className="flex items-start gap-3">
-                                <div className="flex-shrink-0 mt-0.5">
-                                  <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                  </svg>
-                                </div>
-                                <div className="flex-1">
-                                  <p className="text-xs font-bold text-indigo-700 uppercase tracking-wider mb-1.5">
-                                    Business Impact
-                                  </p>
-                                  <p className="text-sm text-gray-800 leading-relaxed font-medium">
-                                    {diff.business_impact}
-                                  </p>
-                                </div>
-                              </div>
+                            <div>
+                              <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">
+                                Business Impact
+                              </p>
+                              <p className="text-sm text-gray-700 leading-relaxed">
+                                {diff.business_impact}
+                              </p>
                             </div>
                           </div>
 
-                          <div className="bg-gradient-to-br from-blue-50 to-blue-100 px-5 py-4 border-t-2 border-blue-200">
+                          <div className="bg-gradient-to-br from-green-50 to-emerald-100 px-5 py-4 border-t-2 border-green-200">
                             <div className="flex items-start gap-3">
                               <div className="flex-shrink-0 mt-0.5">
-                                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5">
+                                <p className="text-xs font-bold text-green-900 uppercase tracking-wider mb-1.5">
                                   Recommendation
                                 </p>
                                 <p className="text-sm text-gray-800 leading-relaxed font-medium">
