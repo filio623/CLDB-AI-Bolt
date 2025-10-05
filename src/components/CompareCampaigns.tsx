@@ -632,31 +632,27 @@ const CompareCampaigns: React.FC<{
             <div className={`${warningStyle.bgColor} border-l-4 ${warningStyle.borderColor} rounded-lg shadow-sm mb-6 overflow-hidden`}>
               <div className="p-5">
                 <div className="flex items-start gap-4">
-                  <div className={`flex-shrink-0 ${warningStyle.iconColor} mt-0.5`}>
+                  <div className={`flex-shrink-0 ${warningStyle.iconColor} mt-1`}>
                     {warningStyle.icon}
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-3">
-                      <h3 className={`text-lg font-semibold ${warningStyle.titleColor}`}>
+                    <div className="mb-3">
+                      <h3 className={`text-base font-semibold ${warningStyle.titleColor} mb-1`}>
                         {analysis.overall_comparability === 'not recommended'
                           ? 'Comparison Not Recommended'
                           : `${analysis.overall_comparability.charAt(0).toUpperCase() + analysis.overall_comparability.slice(1)} Comparability`}
                       </h3>
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${warningStyle.badgeColor}`}>
-                        {analysis.overall_comparability.toUpperCase()}
-                      </span>
+                      <p className={`text-sm ${warningStyle.textColor}`}>
+                        {analysis.interpretation_guidance}
+                      </p>
                     </div>
-
-                    <p className={`text-sm leading-relaxed ${warningStyle.textColor} mb-4`}>
-                      {analysis.interpretation_guidance}
-                    </p>
 
                     {/* Major Concerns */}
                     {analysis.major_concerns.length > 0 && (
-                      <div className="bg-white bg-opacity-50 rounded-lg p-4 mb-4">
-                        <h4 className={`text-sm font-semibold ${warningStyle.titleColor} mb-2.5`}>Key Issues</h4>
-                        <ul className="space-y-2">
+                      <div className="mb-3">
+                        <h4 className={`text-sm font-semibold ${warningStyle.titleColor} mb-2`}>Key Issues:</h4>
+                        <ul className="space-y-1.5">
                           {analysis.major_concerns.map((concern, idx) => (
                             <li key={idx} className={`flex items-start gap-2 text-sm ${warningStyle.textColor}`}>
                               <span className={`flex-shrink-0 w-1.5 h-1.5 rounded-full ${warningStyle.accentColor} mt-1.5`}></span>
@@ -667,16 +663,16 @@ const CompareCampaigns: React.FC<{
                       </div>
                     )}
 
-                    {/* Structural Differences - Expandable Cards */}
+                    {/* Structural Differences - Compact Cards */}
                     {analysis.structural_differences.length > 0 && (
-                      <div className="bg-white bg-opacity-50 rounded-lg p-4">
-                        <h4 className={`text-sm font-semibold ${warningStyle.titleColor} mb-3`}>
-                          Structural Analysis ({analysis.structural_differences.length} factors)
+                      <div>
+                        <h4 className={`text-sm font-semibold ${warningStyle.titleColor} mb-2.5`}>
+                          Structural Differences
                         </h4>
-                        <div className="space-y-3">
+                        <div className="space-y-2">
                           {analysis.structural_differences.map((diff, idx) => (
-                            <div key={idx} className="bg-white rounded-md p-3.5 shadow-sm border border-gray-200">
-                              <div className="flex items-start justify-between gap-3 mb-2.5">
+                            <div key={idx} className="bg-white bg-opacity-60 rounded-md p-3 border border-gray-200">
+                              <div className="flex items-center justify-between gap-3 mb-2">
                                 <h5 className="font-semibold text-sm text-gray-900">
                                   {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                                 </h5>
@@ -687,37 +683,25 @@ const CompareCampaigns: React.FC<{
                                 )}
                               </div>
 
-                              <div className="grid grid-cols-2 gap-3 mb-2.5">
-                                <div className="flex items-start gap-2">
-                                  <div className="w-5 h-5 bg-blue-600 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <div className="flex items-center gap-4 text-xs mb-2">
+                                <div className="flex items-center gap-1.5">
+                                  <div className="w-4 h-4 bg-blue-600 rounded flex items-center justify-center flex-shrink-0">
                                     <span className="text-xs font-bold text-white">A</span>
                                   </div>
-                                  <div className="min-w-0">
-                                    <p className="text-xs text-gray-500 mb-0.5">Campaign 1</p>
-                                    <p className="text-sm font-medium text-gray-900 break-words">{diff.campaign_1_value}</p>
-                                  </div>
+                                  <span className="font-medium text-gray-900">{diff.campaign_1_value}</span>
                                 </div>
-                                <div className="flex items-start gap-2">
-                                  <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#987D7C' }}>
+                                <span className="text-gray-400">vs</span>
+                                <div className="flex items-center gap-1.5">
+                                  <div className="w-4 h-4 rounded flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#987D7C' }}>
                                     <span className="text-xs font-bold text-white">B</span>
                                   </div>
-                                  <div className="min-w-0">
-                                    <p className="text-xs text-gray-500 mb-0.5">Campaign 2</p>
-                                    <p className="text-sm font-medium text-gray-900 break-words">{diff.campaign_2_value}</p>
-                                  </div>
+                                  <span className="font-medium text-gray-900">{diff.campaign_2_value}</span>
                                 </div>
                               </div>
 
-                              <div className="space-y-2 pt-2 border-t border-gray-100">
-                                <div>
-                                  <p className="text-xs font-medium text-gray-600 mb-0.5">Business Impact</p>
-                                  <p className="text-sm text-gray-700 leading-relaxed">{diff.business_impact}</p>
-                                </div>
-                                <div>
-                                  <p className="text-xs font-medium text-gray-600 mb-0.5">Recommendation</p>
-                                  <p className="text-sm text-gray-700 leading-relaxed">{diff.recommendation}</p>
-                                </div>
-                              </div>
+                              <p className="text-xs text-gray-600 leading-relaxed">
+                                <span className="font-medium">Impact:</span> {diff.business_impact}
+                              </p>
                             </div>
                           ))}
                         </div>
