@@ -660,18 +660,20 @@ const CompareCampaigns: React.FC<{
                                 {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
                               </h5>
 
-                              <div className="flex items-center gap-2">
-                                <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm">A</span>
-                                <span className="font-bold text-blue-900 text-sm">{diff.campaign_1_value}</span>
-                              </div>
+                              <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5">
+                                <div className="flex items-center gap-2">
+                                  <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm">A</span>
+                                  <span className="font-bold text-blue-900 text-sm">{diff.campaign_1_value}</span>
+                                </div>
 
-                              <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                              </svg>
+                                <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                </svg>
 
-                              <div className="flex items-center gap-2">
-                                <span className="w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm" style={{ backgroundColor: '#987D7C' }}>B</span>
-                                <span className="font-bold text-gray-900 text-sm">{diff.campaign_2_value}</span>
+                                <div className="flex items-center gap-2">
+                                  <span className="w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm" style={{ backgroundColor: '#987D7C' }}>B</span>
+                                  <span className="font-bold text-gray-900 text-sm">{diff.campaign_2_value}</span>
+                                </div>
                               </div>
 
                               {diff.comparability_concern && (
