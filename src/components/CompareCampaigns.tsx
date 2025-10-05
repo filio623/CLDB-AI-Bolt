@@ -655,10 +655,25 @@ const CompareCampaigns: React.FC<{
                       {analysis.structural_differences.filter(diff => diff.comparability_concern).map((diff, idx) => (
                         <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200">
                           <div className="p-5">
-                            <div className="flex items-center gap-3 mb-4">
+                            <div className="flex items-center gap-3 mb-4 flex-wrap">
                               <h5 className="font-bold text-lg text-gray-900">
-                                {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
                               </h5>
+
+                              <div className="flex items-center gap-2">
+                                <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm">A</span>
+                                <span className="font-bold text-blue-900 text-sm">{diff.campaign_1_value}</span>
+                              </div>
+
+                              <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                              </svg>
+
+                              <div className="flex items-center gap-2">
+                                <span className="w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm" style={{ backgroundColor: '#987D7C' }}>B</span>
+                                <span className="font-bold text-gray-900 text-sm">{diff.campaign_2_value}</span>
+                              </div>
+
                               {diff.comparability_concern && (
                                 <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${warningStyle.badgeColor} uppercase tracking-wide`}>
                                   Concern
@@ -666,35 +681,22 @@ const CompareCampaigns: React.FC<{
                               )}
                             </div>
 
-                            <div className="flex items-center gap-3 mb-4">
-                              <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
-                                <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm">A</span>
-                                <div className="flex flex-col">
-                                  <span className="text-[10px] font-semibold text-blue-600 uppercase tracking-wide">{primaryCampaign?.campaign_name}</span>
-                                  <span className="font-bold text-blue-900 text-sm">{diff.campaign_1_value}</span>
+                            <div className="bg-gradient-to-br from-indigo-50 via-blue-50 to-cyan-50 rounded-xl p-4 border-2 border-indigo-200 shadow-sm">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 mt-0.5">
+                                  <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                  </svg>
+                                </div>
+                                <div className="flex-1">
+                                  <p className="text-xs font-bold text-indigo-700 uppercase tracking-wider mb-1.5">
+                                    Business Impact
+                                  </p>
+                                  <p className="text-sm text-gray-800 leading-relaxed font-medium">
+                                    {diff.business_impact}
+                                  </p>
                                 </div>
                               </div>
-
-                              <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                              </svg>
-
-                              <div className="flex items-center gap-2 bg-purple-50 px-3 py-2 rounded-lg border border-purple-200">
-                                <span className="w-5 h-5 bg-purple-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm">B</span>
-                                <div className="flex flex-col">
-                                  <span className="text-[10px] font-semibold text-purple-600 uppercase tracking-wide">{comparisonCampaign?.campaign_name}</span>
-                                  <span className="font-bold text-purple-900 text-sm">{diff.campaign_2_value}</span>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="mb-1">
-                              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                                Business Impact
-                              </p>
-                              <p className="text-sm text-slate-700 leading-relaxed pl-3 border-l-3 border-slate-300" style={{ borderLeftWidth: '3px' }}>
-                                {diff.business_impact}
-                              </p>
                             </div>
                           </div>
 
