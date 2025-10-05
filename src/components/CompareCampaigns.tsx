@@ -642,33 +642,6 @@ const CompareCampaigns: React.FC<{
                   </p>
                 </div>
 
-                {/* Key Issues */}
-                {analysis.major_concerns.length > 0 && (
-                  <div className="mb-6">
-                    <div className="flex items-center gap-2 mb-3.5">
-                      <div className={`w-1 h-5 rounded-full ${warningStyle.accentColor}`}></div>
-                      <h4 className={`text-sm font-bold ${warningStyle.titleColor} uppercase tracking-wide`}>Key Issues</h4>
-                    </div>
-                    <ul className="space-y-3 ml-3">
-                      {analysis.major_concerns.map((concern, idx) => {
-                        const parts = concern.split(':');
-                        const label = parts[0];
-                        const description = parts.slice(1).join(':').trim();
-
-                        return (
-                          <li key={idx} className="flex items-start gap-2">
-                            <span className={`flex-shrink-0 w-1.5 h-1.5 rounded-full ${warningStyle.accentColor} mt-2`}></span>
-                            <div className="flex-1">
-                              <span className={`font-bold ${warningStyle.textColor} text-sm`}>{label}:</span>
-                              <span className={`${warningStyle.textColor} text-sm ml-1 leading-relaxed`}>{description}</span>
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                )}
-
                 {/* Structural Differences */}
                 {analysis.structural_differences.length > 0 && (
                   <div>
