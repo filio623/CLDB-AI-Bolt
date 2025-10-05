@@ -569,18 +569,21 @@ const CompareCampaigns: React.FC<{
       {compareResult?.structural_analysis && (
         (() => {
           const analysis = compareResult.structural_analysis;
-          
+
           // Determine warning level and styling based on comparability
           const getWarningStyle = (comparability: string) => {
             switch (comparability.toLowerCase()) {
               case 'not recommended':
                 return {
                   bgColor: 'bg-red-50',
-                  borderColor: 'border-red-200',
-                  iconColor: 'text-red-500',
-                  textColor: 'text-red-800',
+                  borderColor: 'border-red-300',
+                  accentColor: 'bg-red-500',
+                  iconColor: 'text-red-600',
+                  textColor: 'text-red-900',
+                  titleColor: 'text-red-800',
+                  badgeColor: 'bg-red-100 text-red-700',
                   icon: (
-                    <svg className="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                    <svg className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
                     </svg>
                   )
@@ -588,11 +591,14 @@ const CompareCampaigns: React.FC<{
               case 'low':
                 return {
                   bgColor: 'bg-orange-50',
-                  borderColor: 'border-orange-200',
-                  iconColor: 'text-orange-500',
-                  textColor: 'text-orange-800',
+                  borderColor: 'border-orange-300',
+                  accentColor: 'bg-orange-500',
+                  iconColor: 'text-orange-600',
+                  textColor: 'text-orange-900',
+                  titleColor: 'text-orange-800',
+                  badgeColor: 'bg-orange-100 text-orange-700',
                   icon: (
-                    <svg className="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                    <svg className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
                     </svg>
                   )
@@ -600,11 +606,14 @@ const CompareCampaigns: React.FC<{
               case 'moderate':
                 return {
                   bgColor: 'bg-yellow-50',
-                  borderColor: 'border-yellow-200',
-                  iconColor: 'text-yellow-500',
-                  textColor: 'text-yellow-800',
+                  borderColor: 'border-yellow-300',
+                  accentColor: 'bg-yellow-500',
+                  iconColor: 'text-yellow-600',
+                  textColor: 'text-yellow-900',
+                  titleColor: 'text-yellow-800',
+                  badgeColor: 'bg-yellow-100 text-yellow-700',
                   icon: (
-                    <svg className="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                    <svg className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
                     </svg>
                   )
@@ -615,68 +624,104 @@ const CompareCampaigns: React.FC<{
           };
 
           const warningStyle = getWarningStyle(analysis.overall_comparability);
-          
+
           // Only show warning if comparability is not 'High'
           if (!warningStyle) return null;
 
           return (
-            <div className={`${warningStyle.bgColor} ${warningStyle.borderColor} border rounded-lg p-4 mb-6`}>
-              <div className="flex items-start space-x-3">
-                <div className={warningStyle.iconColor}>
-                  {warningStyle.icon}
-                </div>
-                <div className="flex-1">
-                  <div className={`text-sm ${warningStyle.textColor}`}>
-                    <span className="font-semibold">
-                      {analysis.overall_comparability === 'not recommended' 
-                        ? 'Comparison Not Recommended' 
-                        : `${analysis.overall_comparability} Comparability`}
-                    </span>
-                    <p className="mt-2">{analysis.interpretation_guidance}</p>
-                    
+            <div className={`${warningStyle.bgColor} border-l-4 ${warningStyle.borderColor} rounded-lg shadow-sm mb-6 overflow-hidden`}>
+              <div className="p-5">
+                <div className="flex items-start gap-4">
+                  <div className={`flex-shrink-0 ${warningStyle.iconColor} mt-0.5`}>
+                    {warningStyle.icon}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-3">
+                      <h3 className={`text-lg font-semibold ${warningStyle.titleColor}`}>
+                        {analysis.overall_comparability === 'not recommended'
+                          ? 'Comparison Not Recommended'
+                          : `${analysis.overall_comparability.charAt(0).toUpperCase() + analysis.overall_comparability.slice(1)} Comparability`}
+                      </h3>
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${warningStyle.badgeColor}`}>
+                        {analysis.overall_comparability.toUpperCase()}
+                      </span>
+                    </div>
+
+                    <p className={`text-sm leading-relaxed ${warningStyle.textColor} mb-4`}>
+                      {analysis.interpretation_guidance}
+                    </p>
+
                     {/* Major Concerns */}
                     {analysis.major_concerns.length > 0 && (
-                      <div className="mt-3">
-                        <span className="font-medium">Key Issues:</span>
-                        <ul className="list-disc list-inside mt-1 space-y-1">
+                      <div className="bg-white bg-opacity-50 rounded-lg p-4 mb-4">
+                        <h4 className={`text-sm font-semibold ${warningStyle.titleColor} mb-2.5`}>Key Issues</h4>
+                        <ul className="space-y-2">
                           {analysis.major_concerns.map((concern, idx) => (
-                            <li key={idx} className="text-sm">{concern}</li>
+                            <li key={idx} className={`flex items-start gap-2 text-sm ${warningStyle.textColor}`}>
+                              <span className={`flex-shrink-0 w-1.5 h-1.5 rounded-full ${warningStyle.accentColor} mt-1.5`}></span>
+                              <span className="flex-1">{concern}</span>
+                            </li>
                           ))}
                         </ul>
                       </div>
                     )}
-                    
-                    {/* Structural Differences - Collapsible */}
+
+                    {/* Structural Differences - Expandable Cards */}
                     {analysis.structural_differences.length > 0 && (
-                      <details className="mt-3">
-                        <summary className="font-medium cursor-pointer hover:underline">
-                          View Structural Analysis ({analysis.structural_differences.length} factors)
-                        </summary>
-                        <div className="mt-2 space-y-3">
+                      <div className="bg-white bg-opacity-50 rounded-lg p-4">
+                        <h4 className={`text-sm font-semibold ${warningStyle.titleColor} mb-3`}>
+                          Structural Analysis ({analysis.structural_differences.length} factors)
+                        </h4>
+                        <div className="space-y-3">
                           {analysis.structural_differences.map((diff, idx) => (
-                            <div key={idx} className="pl-4 border-l-2 border-gray-300">
-                              <div className="font-medium text-sm">
-                                {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                            <div key={idx} className="bg-white rounded-md p-3.5 shadow-sm border border-gray-200">
+                              <div className="flex items-start justify-between gap-3 mb-2.5">
+                                <h5 className="font-semibold text-sm text-gray-900">
+                                  {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                </h5>
                                 {diff.comparability_concern && (
-                                  <span className="ml-2 text-xs font-normal bg-white bg-opacity-60 px-2 py-0.5 rounded">
-                                    ⚠️ Concern
+                                  <span className={`flex-shrink-0 px-2 py-0.5 rounded text-xs font-medium ${warningStyle.badgeColor}`}>
+                                    Concern
                                   </span>
                                 )}
                               </div>
-                              <div className="text-xs mt-1">
-                                <span className="font-medium">Campaign 1:</span> {diff.campaign_1_value} | 
-                                <span className="font-medium ml-2">Campaign 2:</span> {diff.campaign_2_value}
+
+                              <div className="grid grid-cols-2 gap-3 mb-2.5">
+                                <div className="flex items-start gap-2">
+                                  <div className="w-5 h-5 bg-blue-600 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span className="text-xs font-bold text-white">A</span>
+                                  </div>
+                                  <div className="min-w-0">
+                                    <p className="text-xs text-gray-500 mb-0.5">Campaign 1</p>
+                                    <p className="text-sm font-medium text-gray-900 break-words">{diff.campaign_1_value}</p>
+                                  </div>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                  <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#987D7C' }}>
+                                    <span className="text-xs font-bold text-white">B</span>
+                                  </div>
+                                  <div className="min-w-0">
+                                    <p className="text-xs text-gray-500 mb-0.5">Campaign 2</p>
+                                    <p className="text-sm font-medium text-gray-900 break-words">{diff.campaign_2_value}</p>
+                                  </div>
+                                </div>
                               </div>
-                              <div className="text-xs mt-1">
-                                <span className="font-medium">Impact:</span> {diff.business_impact}
-                              </div>
-                              <div className="text-xs mt-1">
-                                <span className="font-medium">Recommendation:</span> {diff.recommendation}
+
+                              <div className="space-y-2 pt-2 border-t border-gray-100">
+                                <div>
+                                  <p className="text-xs font-medium text-gray-600 mb-0.5">Business Impact</p>
+                                  <p className="text-sm text-gray-700 leading-relaxed">{diff.business_impact}</p>
+                                </div>
+                                <div>
+                                  <p className="text-xs font-medium text-gray-600 mb-0.5">Recommendation</p>
+                                  <p className="text-sm text-gray-700 leading-relaxed">{diff.recommendation}</p>
+                                </div>
                               </div>
                             </div>
                           ))}
                         </div>
-                      </details>
+                      </div>
                     )}
                   </div>
                 </div>
