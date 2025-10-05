@@ -630,27 +630,27 @@ const CompareCampaigns: React.FC<{
 
           return (
             <div className={`${warningStyle.bgColor} border-l-4 ${warningStyle.borderColor} rounded-lg shadow-sm mb-6 overflow-hidden`}>
-              <div className="p-6">
-                <div className="mb-5">
-                  <h3 className={`text-lg font-bold ${warningStyle.titleColor} mb-2`}>
+              <div className="p-5">
+                <div className="mb-4">
+                  <h3 className={`text-base font-bold ${warningStyle.titleColor} mb-1.5`}>
                     {analysis.overall_comparability === 'not recommended'
                       ? 'Comparison Not Recommended'
                       : `${analysis.overall_comparability.charAt(0).toUpperCase() + analysis.overall_comparability.slice(1)} Comparability`}
                   </h3>
-                  <p className={`text-sm ${warningStyle.textColor} leading-relaxed`}>
+                  <p className={`text-sm ${warningStyle.textColor} leading-snug`}>
                     {analysis.interpretation_guidance}
                   </p>
                 </div>
 
                 {/* Key Issues */}
                 {analysis.major_concerns.length > 0 && (
-                  <div className="mb-5 pb-5 border-b border-gray-200">
-                    <h4 className={`text-sm font-bold ${warningStyle.titleColor} mb-2.5`}>Key Issues</h4>
-                    <ul className="space-y-2">
+                  <div className="mb-4 pb-4 border-b border-gray-200">
+                    <h4 className={`text-xs font-bold ${warningStyle.titleColor} uppercase tracking-wide mb-2`}>Key Issues</h4>
+                    <ul className="space-y-1.5">
                       {analysis.major_concerns.map((concern, idx) => (
-                        <li key={idx} className={`flex items-start gap-2.5 text-sm ${warningStyle.textColor}`}>
-                          <span className={`flex-shrink-0 w-1 h-1 rounded-full ${warningStyle.accentColor} mt-2`}></span>
-                          <span className="flex-1 leading-relaxed">{concern}</span>
+                        <li key={idx} className={`flex items-start gap-2 text-sm ${warningStyle.textColor}`}>
+                          <span className={`flex-shrink-0 w-1 h-1 rounded-full ${warningStyle.accentColor} mt-1.5`}></span>
+                          <span className="flex-1 leading-snug">{concern}</span>
                         </li>
                       ))}
                     </ul>
@@ -660,21 +660,21 @@ const CompareCampaigns: React.FC<{
                 {/* Structural Differences */}
                 {analysis.structural_differences.length > 0 && (
                   <div>
-                    <h4 className={`text-sm font-bold ${warningStyle.titleColor} mb-3.5`}>
+                    <h4 className={`text-xs font-bold ${warningStyle.titleColor} uppercase tracking-wide mb-3`}>
                       Structural Differences
                     </h4>
-                    <div className="space-y-3">
+                    <div className="space-y-2.5">
                       {analysis.structural_differences.map((diff, idx) => (
-                        <div key={idx} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <div key={idx} className="bg-white rounded-lg p-4 border border-gray-200">
                           <div className="flex items-start justify-between gap-4 mb-3">
                             <div className="flex items-start gap-3 flex-1">
-                              <div className={`w-1 h-6 rounded-full ${warningStyle.accentColor} mt-0.5 flex-shrink-0`}></div>
+                              <div className={`w-1 self-stretch rounded-full ${warningStyle.accentColor} flex-shrink-0`}></div>
                               <div className="flex-1 min-w-0">
-                                <div className="flex items-baseline gap-3 mb-2">
-                                  <h5 className="font-bold text-sm text-gray-900">
+                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1">
+                                  <h5 className="font-semibold text-sm text-gray-900">
                                     {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                                   </h5>
-                                  <div className="flex items-center gap-2 text-xs text-gray-600">
+                                  <div className="flex items-center gap-1.5 text-xs text-gray-500">
                                     <div className="flex items-center gap-1">
                                       <span className="w-3.5 h-3.5 bg-blue-600 rounded text-white text-[9px] font-bold flex items-center justify-center">A</span>
                                       <span className="font-medium">{diff.campaign_1_value}</span>
@@ -686,24 +686,24 @@ const CompareCampaigns: React.FC<{
                                     </div>
                                   </div>
                                 </div>
-                                <p className="text-sm text-gray-600 leading-relaxed">
+                                <p className="text-sm text-gray-600 leading-snug">
                                   {diff.business_impact}
                                 </p>
                               </div>
                             </div>
                             {diff.comparability_concern && (
-                              <span className={`flex-shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold ${warningStyle.badgeColor}`}>
+                              <span className={`flex-shrink-0 px-2.5 py-0.5 rounded-full text-xs font-semibold ${warningStyle.badgeColor}`}>
                                 Concern
                               </span>
                             )}
                           </div>
 
                           <div className="ml-4 pl-3 border-l-2 border-gray-200">
-                            <div className="bg-white rounded-md p-3">
-                              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                            <div className="bg-gray-50 rounded p-2.5">
+                              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
                                 Recommendation
                               </p>
-                              <p className="text-sm text-gray-800 leading-relaxed">
+                              <p className="text-sm text-gray-700 leading-snug">
                                 {diff.recommendation}
                               </p>
                             </div>
