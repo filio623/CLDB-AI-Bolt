@@ -631,28 +631,40 @@ const CompareCampaigns: React.FC<{
           return (
             <div className={`${warningStyle.bgColor} border-l-4 ${warningStyle.borderColor} rounded-xl shadow-md mb-6 overflow-hidden`}>
               <div className="p-6">
-                <div className="mb-5">
-                  <h3 className={`text-lg font-bold ${warningStyle.titleColor} mb-2`}>
+                <div className="mb-6">
+                  <h3 className={`text-xl font-bold ${warningStyle.titleColor} mb-2.5`}>
                     {analysis.overall_comparability === 'not recommended'
                       ? 'Comparison Not Recommended'
                       : `${analysis.overall_comparability.charAt(0).toUpperCase() + analysis.overall_comparability.slice(1)} Comparability`}
                   </h3>
-                  <p className={`text-sm ${warningStyle.textColor} leading-relaxed`}>
+                  <p className={`text-base ${warningStyle.textColor} leading-relaxed`}>
                     {analysis.interpretation_guidance}
                   </p>
                 </div>
 
                 {/* Key Issues */}
                 {analysis.major_concerns.length > 0 && (
-                  <div className="mb-5">
-                    <h4 className={`text-xs font-bold ${warningStyle.titleColor} uppercase tracking-wider mb-3`}>Key Issues</h4>
-                    <ul className="space-y-2.5">
-                      {analysis.major_concerns.map((concern, idx) => (
-                        <li key={idx} className={`flex items-start gap-3 text-sm ${warningStyle.textColor}`}>
-                          <span className={`flex-shrink-0 w-1.5 h-1.5 rounded-full ${warningStyle.accentColor} mt-1.5`}></span>
-                          <span className="flex-1 leading-relaxed font-medium">{concern}</span>
-                        </li>
-                      ))}
+                  <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-3.5">
+                      <div className={`w-1 h-5 rounded-full ${warningStyle.accentColor}`}></div>
+                      <h4 className={`text-sm font-bold ${warningStyle.titleColor} uppercase tracking-wide`}>Key Issues</h4>
+                    </div>
+                    <ul className="space-y-3 ml-3">
+                      {analysis.major_concerns.map((concern, idx) => {
+                        const parts = concern.split(':');
+                        const label = parts[0];
+                        const description = parts.slice(1).join(':').trim();
+
+                        return (
+                          <li key={idx} className="flex items-start gap-2">
+                            <span className={`flex-shrink-0 w-1.5 h-1.5 rounded-full ${warningStyle.accentColor} mt-2`}></span>
+                            <div className="flex-1">
+                              <span className={`font-bold ${warningStyle.textColor} text-sm`}>{label}:</span>
+                              <span className={`${warningStyle.textColor} text-sm ml-1 leading-relaxed`}>{description}</span>
+                            </div>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 )}
@@ -660,57 +672,66 @@ const CompareCampaigns: React.FC<{
                 {/* Structural Differences */}
                 {analysis.structural_differences.length > 0 && (
                   <div>
-                    <h4 className={`text-xs font-bold ${warningStyle.titleColor} uppercase tracking-wider mb-3.5`}>
-                      Structural Differences
-                    </h4>
-                    <div className="space-y-3.5">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className={`w-1 h-5 rounded-full ${warningStyle.accentColor}`}></div>
+                      <h4 className={`text-sm font-bold ${warningStyle.titleColor} uppercase tracking-wide`}>
+                        Structural Differences
+                      </h4>
+                    </div>
+                    <div className="space-y-4">
                       {analysis.structural_differences.filter(diff => diff.comparability_concern).map((diff, idx) => (
-                        <div key={idx} className="bg-white rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
-                          <div className="p-4 pb-3">
-                            <div className="flex items-start justify-between gap-4 mb-2.5">
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center justify-between gap-3 mb-2">
-                                  <h5 className="font-bold text-base text-gray-900">
-                                    {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                  </h5>
-                                  {diff.comparability_concern && (
-                                    <span className={`flex-shrink-0 px-2.5 py-0.5 rounded-full text-xs font-semibold ${warningStyle.badgeColor}`}>
-                                      Concern
-                                    </span>
-                                  )}
+                        <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200">
+                          <div className="p-5">
+                            <div className="flex items-start justify-between gap-4 mb-4">
+                              <h5 className="font-bold text-lg text-gray-900 flex-1">
+                                {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                              </h5>
+                              {diff.comparability_concern && (
+                                <span className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-bold ${warningStyle.badgeColor} uppercase tracking-wide`}>
+                                  Concern
+                                </span>
+                              )}
+                            </div>
+
+                            <div className="flex items-center gap-3 mb-4">
+                              <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg border-2 border-blue-200">
+                                <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm">A</span>
+                                <div className="flex flex-col">
+                                  <span className="text-[10px] font-semibold text-blue-600 uppercase tracking-wide">{primaryCampaign?.campaign_name}</span>
+                                  <span className="font-bold text-blue-900 text-sm">{diff.campaign_1_value}</span>
                                 </div>
-                                <div className="flex items-center gap-2.5 mb-3">
-                                  <div className="flex items-center gap-1.5 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
-                                    <span className="w-4 h-4 bg-blue-600 rounded shadow-sm text-white text-[10px] font-bold flex items-center justify-center">A</span>
-                                    <span className="font-semibold text-blue-700 text-xs">{diff.campaign_1_value}</span>
-                                  </div>
-                                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                  </svg>
-                                  <div className="flex items-center gap-1.5 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-300">
-                                    <span className="w-4 h-4 rounded shadow-sm text-white text-[10px] font-bold flex items-center justify-center" style={{ backgroundColor: '#987D7C' }}>B</span>
-                                    <span className="font-semibold text-gray-700 text-xs">{diff.campaign_2_value}</span>
-                                  </div>
+                              </div>
+
+                              <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                              </svg>
+
+                              <div className="flex items-center gap-2 bg-orange-50 px-3 py-2 rounded-lg border-2 border-orange-200">
+                                <span className="w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm" style={{ backgroundColor: '#987D7C' }}>B</span>
+                                <div className="flex flex-col">
+                                  <span className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: '#987D7C' }}>{comparisonCampaign?.campaign_name}</span>
+                                  <span className="font-bold text-gray-900 text-sm">{diff.campaign_2_value}</span>
                                 </div>
-                                <p className="text-sm text-gray-700 leading-relaxed">
-                                  {diff.business_impact}
-                                </p>
                               </div>
                             </div>
+
+                            <p className="text-sm text-gray-700 leading-relaxed mb-4">
+                              {diff.business_impact}
+                            </p>
                           </div>
 
-                          <div className="bg-gray-50 px-4 py-3 border-t border-gray-200">
-                            <div className="flex items-start gap-2.5">
+                          <div className="bg-gradient-to-br from-blue-50 to-blue-100 px-5 py-4 border-t-2 border-blue-200">
+                            <div className="flex items-start gap-3">
                               <div className="flex-shrink-0 mt-0.5">
-                                <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1">
+                                <p className="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5">
                                   Recommendation
                                 </p>
-                                <p className="text-sm text-gray-800 leading-relaxed">
+                                <p className="text-sm text-gray-800 leading-relaxed font-medium">
                                   {diff.recommendation}
                                 </p>
                               </div>
