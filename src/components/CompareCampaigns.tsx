@@ -690,22 +690,13 @@ const CompareCampaigns: React.FC<{
                               </div>
                             </div>
 
-                            <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border-l-4 border-gray-400">
-                              <div className="flex items-start gap-3">
-                                <div className="flex-shrink-0 mt-0.5">
-                                  <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                  </svg>
-                                </div>
-                                <div className="flex-1">
-                                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">
-                                    Business Impact
-                                  </p>
-                                  <p className="text-sm text-gray-800 leading-relaxed font-medium">
-                                    {diff.business_impact}
-                                  </p>
-                                </div>
-                              </div>
+                            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-4 border-l-4 border-amber-500">
+                              <p className="text-xs font-bold text-amber-800 uppercase tracking-wider mb-1.5">
+                                Business Impact
+                              </p>
+                              <p className="text-sm text-gray-900 leading-relaxed font-medium">
+                                {diff.business_impact}
+                              </p>
                             </div>
                           </div>
 
