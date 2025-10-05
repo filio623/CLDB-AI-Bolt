@@ -663,46 +663,55 @@ const CompareCampaigns: React.FC<{
                       </div>
                     )}
 
-                    {/* Structural Differences - Compact Cards */}
+                    {/* Structural Differences */}
                     {analysis.structural_differences.length > 0 && (
                       <div>
-                        <h4 className={`text-sm font-semibold ${warningStyle.titleColor} mb-2.5`}>
+                        <h4 className={`text-sm font-semibold ${warningStyle.titleColor} mb-3`}>
                           Structural Differences
                         </h4>
-                        <div className="space-y-2.5">
+                        <div className="space-y-3">
                           {analysis.structural_differences.map((diff, idx) => (
-                            <div key={idx} className="bg-white rounded-lg p-4 border border-gray-200">
-                              <div className="flex items-center justify-between mb-3">
-                                <h5 className="font-semibold text-sm text-gray-900">
-                                  {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                </h5>
+                            <div key={idx} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                              <div className="flex items-start justify-between gap-3 mb-4">
+                                <div className="flex items-start gap-3">
+                                  <div className={`w-1 h-14 rounded-full ${warningStyle.accentColor} mt-1`}></div>
+                                  <div>
+                                    <h5 className="font-semibold text-base text-gray-900 mb-1.5">
+                                      {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                    </h5>
+                                    <div className="flex items-center gap-2.5 text-sm text-gray-600">
+                                      <div className="flex items-center gap-1.5">
+                                        <span className="w-4 h-4 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center">A</span>
+                                        <span className="font-medium">{diff.campaign_1_value}</span>
+                                      </div>
+                                      <span className="text-gray-400">→</span>
+                                      <div className="flex items-center gap-1.5">
+                                        <span className="w-4 h-4 rounded text-white text-[10px] font-bold flex items-center justify-center" style={{ backgroundColor: '#987D7C' }}>B</span>
+                                        <span className="font-medium">{diff.campaign_2_value}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                                 {diff.comparability_concern && (
-                                  <span className={`flex-shrink-0 px-2.5 py-0.5 rounded text-xs font-medium ${warningStyle.badgeColor}`}>
+                                  <span className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-medium ${warningStyle.badgeColor}`}>
                                     Concern
                                   </span>
                                 )}
                               </div>
 
-                              <div className="flex items-center gap-3 mb-3 text-sm">
-                                <div className="flex items-center gap-2">
-                                  <span className="w-5 h-5 bg-blue-600 rounded text-white text-xs font-bold flex items-center justify-center">A</span>
-                                  <span className="font-medium text-gray-700">{diff.campaign_1_value}</span>
-                                </div>
-                                <span className="text-gray-300">•</span>
-                                <div className="flex items-center gap-2">
-                                  <span className="w-5 h-5 rounded text-white text-xs font-bold flex items-center justify-center" style={{ backgroundColor: '#987D7C' }}>B</span>
-                                  <span className="font-medium text-gray-700">{diff.campaign_2_value}</span>
-                                </div>
-                              </div>
-
-                              <div className="space-y-2 pt-2 border-t border-gray-100">
+                              <div className="ml-7 space-y-3">
                                 <div>
-                                  <p className="text-xs font-semibold text-gray-600 mb-1">Impact</p>
-                                  <p className="text-sm text-gray-700 leading-relaxed">{diff.business_impact}</p>
+                                  <p className="text-sm text-gray-600 leading-relaxed">
+                                    {diff.business_impact}
+                                  </p>
                                 </div>
-                                <div>
-                                  <p className="text-xs font-semibold text-gray-600 mb-1">Recommendation</p>
-                                  <p className="text-sm text-gray-700 leading-relaxed">{diff.recommendation}</p>
+                                <div className="bg-white bg-opacity-70 rounded-lg p-3 border border-gray-200">
+                                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                                    Recommendation
+                                  </p>
+                                  <p className="text-sm text-gray-800 leading-relaxed">
+                                    {diff.recommendation}
+                                  </p>
                                 </div>
                               </div>
                             </div>
