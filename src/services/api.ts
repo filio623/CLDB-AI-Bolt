@@ -100,6 +100,32 @@ export interface KPIChange {
   is_positive: boolean;
 }
 
+// ========== STRUCTURAL ANALYSIS TYPES ==========
+// NEW: Types for structural analysis that explains campaign comparison divergence
+
+export type StructuralFactor = 
+  | 'campaign_duration' 
+  | 'number_of_mailings' 
+  | 'total_pieces_mailed' 
+  | 'job_type_difference';
+
+export interface StructuralDifference {
+  factor: StructuralFactor;
+  campaign_1_value: string | number | null;
+  campaign_2_value: string | number | null;
+  difference_magnitude: string; // "Large", "Moderate", "Small"
+  business_impact: string; // Explanation based on client business rules
+  comparability_concern: boolean; // Whether this affects comparison validity
+  recommendation: string; // Specific guidance for interpreting results
+}
+
+export interface StructuralAnalysis {
+  overall_comparability: string; // "High", "Moderate", "Low", "Not Recommended"
+  major_concerns: string[]; // Top-level warnings about comparison validity
+  structural_differences: StructuralDifference[];
+  interpretation_guidance: string; // How to interpret KPI results given these differences
+}
+
 export interface CompareRequest {
   campaign_ids: number[];
   comparison_type?: 'performance' | 'audience' | 'creative' | 'financial' | 'comprehensive';
@@ -119,6 +145,7 @@ export interface KPIMetricData {
 export interface CompareResponse {
   comparison_id: string;
   campaign_summaries: CampaignSummary[];
+  structural_analysis: StructuralAnalysis; // NEW: Structural differences explaining performance divergence
   metrics_comparison: Record<string, KPIMetricData>;
   insights: AnalysisInsight[];
   key_finding: KeyFinding;
