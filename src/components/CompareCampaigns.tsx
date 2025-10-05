@@ -91,6 +91,27 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
   );
 };
 
+const formatComparisonValue = (value: string, factor: string): string => {
+  const lowerFactor = factor.toLowerCase();
+
+  if (lowerFactor === 'campaign_duration') {
+    const numValue = parseInt(value);
+    return `${numValue} ${numValue === 1 ? 'day' : 'days'}`;
+  }
+
+  if (lowerFactor === 'total_pieces_mailed') {
+    const numValue = parseInt(value.replace(/,/g, ''));
+    return `${numValue.toLocaleString()} pcs`;
+  }
+
+  if (lowerFactor === 'number_of_mailings') {
+    const numValue = parseInt(value);
+    return `${numValue} ${numValue === 1 ? 'mailing' : 'mailings'}`;
+  }
+
+  return value;
+};
+
 const CompareCampaigns: React.FC<{
   selectedClient: Client | null;
 }> = ({
@@ -663,7 +684,7 @@ const CompareCampaigns: React.FC<{
                               <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5">
                                 <div className="flex items-center gap-2">
                                   <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm">A</span>
-                                  <span className="font-bold text-blue-900 text-sm">{diff.campaign_1_value}</span>
+                                  <span className="font-bold text-blue-900 text-sm">{formatComparisonValue(diff.campaign_1_value, diff.factor)}</span>
                                 </div>
 
                                 <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -672,7 +693,7 @@ const CompareCampaigns: React.FC<{
 
                                 <div className="flex items-center gap-2">
                                   <span className="w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm" style={{ backgroundColor: '#987D7C' }}>B</span>
-                                  <span className="font-bold text-gray-900 text-sm">{diff.campaign_2_value}</span>
+                                  <span className="font-bold text-gray-900 text-sm">{formatComparisonValue(diff.campaign_2_value, diff.factor)}</span>
                                 </div>
                               </div>
 
