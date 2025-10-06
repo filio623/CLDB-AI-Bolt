@@ -112,8 +112,8 @@ const formatComparisonValue = (value: string | number | null, factor: string): s
     return `${numValue} ${numValue === 1 ? 'mailing' : 'mailings'}`;
   }
 
-  if (lowerFactor === 'job_type') {
-    return valueStr.replace(/^JobType\./, '');
+  if (lowerFactor.includes('job_type') || lowerFactor.includes('jobtype')) {
+    return valueStr.replace(/JobType\./g, '');
   }
 
   return valueStr;
@@ -683,7 +683,7 @@ const CompareCampaigns: React.FC<{
                       {analysis.structural_differences.filter(diff => diff.comparability_concern).map((diff, idx) => (
                         <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200 flex flex-col">
                           <div className="p-5 flex-1 flex flex-col">
-                            <div className="mb-4">
+                            <div className="mb-4 min-h-[80px]">
                               <div className="flex items-center gap-3 mb-3">
                                 <h5 className="font-bold text-lg text-gray-900">
                                   {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
