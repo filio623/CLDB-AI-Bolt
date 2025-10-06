@@ -679,11 +679,11 @@ const CompareCampaigns: React.FC<{
                         Structural Differences
                       </h4>
                     </div>
-                    <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${analysis.structural_differences.filter(diff => diff.comparability_concern).length}, minmax(0, 1fr))` }}>
+                    <div className="grid gap-4 items-start" style={{ gridTemplateColumns: `repeat(${analysis.structural_differences.filter(diff => diff.comparability_concern).length}, minmax(0, 1fr))`, gridAutoRows: '1fr' }}>
                       {analysis.structural_differences.filter(diff => diff.comparability_concern).map((diff, idx) => (
-                        <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200 flex flex-col h-full">
-                          <div className="p-5 flex-1 flex flex-col">
-                            {/* Header Section - Fixed Height */}
+                        <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200 grid grid-rows-[auto_1fr] h-full">
+                          <div className="p-5">
+                            {/* Header Section */}
                             <div className="mb-4">
                               <h5 className="font-bold text-base text-gray-900 mb-3 leading-tight">
                                 {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
@@ -707,7 +707,7 @@ const CompareCampaigns: React.FC<{
                             </div>
 
                             {/* Business Impact Section */}
-                            <div className="mb-4">
+                            <div>
                               <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1.5">
                                 Business Impact
                               </p>
@@ -717,8 +717,8 @@ const CompareCampaigns: React.FC<{
                             </div>
                           </div>
 
-                          {/* Recommendation Section - Auto aligns at bottom */}
-                          <div className="bg-gradient-to-br from-green-50 to-emerald-100 px-5 py-4 border-t-2 border-green-200 mt-auto">
+                          {/* Recommendation Section - Grid ensures alignment */}
+                          <div className="bg-gradient-to-br from-green-50 to-emerald-100 px-5 py-4 border-t-2 border-green-200 self-end">
                             <div className="flex items-start gap-3">
                               <div className="flex-shrink-0 mt-0.5">
                                 <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
