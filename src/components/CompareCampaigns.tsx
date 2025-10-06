@@ -680,23 +680,25 @@ const CompareCampaigns: React.FC<{
                         <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200 flex flex-col">
                           <div className="p-5 flex-1 flex flex-col">
                             <div className="mb-4">
-                              <h5 className="font-bold text-lg text-gray-900 mb-3">
-                                {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
-                              </h5>
+                              <div className="flex items-center gap-3 mb-3">
+                                <h5 className="font-bold text-lg text-gray-900">
+                                  {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
+                                </h5>
 
-                              <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 mb-2">
-                                <div className="flex items-center gap-2">
-                                  <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm">A</span>
-                                  <span className="font-bold text-blue-900 text-sm">{formatComparisonValue(diff.campaign_1_value, diff.factor)}</span>
-                                </div>
+                                <div className="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5">
+                                  <div className="flex items-center gap-2">
+                                    <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm">A</span>
+                                    <span className="font-bold text-blue-900 text-sm">{formatComparisonValue(diff.campaign_1_value, diff.factor)}</span>
+                                  </div>
 
-                                <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                </svg>
+                                  <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                  </svg>
 
-                                <div className="flex items-center gap-2">
-                                  <span className="w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm" style={{ backgroundColor: '#987D7C' }}>B</span>
-                                  <span className="font-bold text-gray-900 text-sm">{formatComparisonValue(diff.campaign_2_value, diff.factor)}</span>
+                                  <div className="flex items-center gap-2">
+                                    <span className="w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm" style={{ backgroundColor: '#987D7C' }}>B</span>
+                                    <span className="font-bold text-gray-900 text-sm">{formatComparisonValue(diff.campaign_2_value, diff.factor)}</span>
+                                  </div>
                                 </div>
                               </div>
 
