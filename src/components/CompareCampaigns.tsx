@@ -122,17 +122,28 @@ const formatComparisonValue = (value: string | number | null, factor: string): s
 // Component for structural differences with aligned recommendation sections
 const StructuralDifferencesGrid: React.FC<{ differences: StructuralDifference[] }> = ({ differences }) => {
   const contentRefs = React.useRef<(HTMLDivElement | null)[]>([]);
+  const recommendationRefs = React.useRef<(HTMLDivElement | null)[]>([]);
   const [minContentHeight, setMinContentHeight] = React.useState<number>(0);
+  const [minRecommendationHeight, setMinRecommendationHeight] = React.useState<number>(0);
 
   React.useEffect(() => {
     const measureHeights = () => {
-      const heights = contentRefs.current
+      const contentHeights = contentRefs.current
         .filter(ref => ref !== null)
         .map(ref => ref!.offsetHeight);
 
-      if (heights.length > 0) {
-        const maxHeight = Math.max(...heights);
-        setMinContentHeight(maxHeight);
+      const recommendationHeights = recommendationRefs.current
+        .filter(ref => ref !== null)
+        .map(ref => ref!.offsetHeight);
+
+      if (contentHeights.length > 0) {
+        const maxContentHeight = Math.max(...contentHeights);
+        setMinContentHeight(maxContentHeight);
+      }
+
+      if (recommendationHeights.length > 0) {
+        const maxRecommendationHeight = Math.max(...recommendationHeights);
+        setMinRecommendationHeight(maxRecommendationHeight);
       }
     };
 
@@ -185,7 +196,11 @@ const StructuralDifferencesGrid: React.FC<{ differences: StructuralDifference[] 
           </div>
 
           {/* Recommendation Section - Now aligned */}
-          <div className="bg-gradient-to-br from-green-50 to-emerald-100 px-5 py-4 border-t-2 border-green-200">
+          <div
+            ref={el => recommendationRefs.current[idx] = el}
+            className="bg-gradient-to-br from-green-50 to-emerald-100 px-5 py-4 border-t-2 border-green-200"
+            style={{ minHeight: minRecommendationHeight > 0 ? `${minRecommendationHeight}px` : 'auto' }}
+          >
             <div className="flex items-start gap-3">
               <div className="flex-shrink-0 mt-0.5">
                 <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
