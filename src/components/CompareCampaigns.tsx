@@ -112,6 +112,10 @@ const formatComparisonValue = (value: string | number | null, factor: string): s
     return `${numValue} ${numValue === 1 ? 'mailing' : 'mailings'}`;
   }
 
+  if (lowerFactor === 'job_type') {
+    return valueStr.replace(/^JobType\./, '');
+  }
+
   return valueStr;
 };
 
@@ -701,12 +705,6 @@ const CompareCampaigns: React.FC<{
                                   </div>
                                 </div>
                               </div>
-
-                              {diff.comparability_concern && (
-                                <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold ${warningStyle.badgeColor} uppercase tracking-wide`}>
-                                  Concern
-                                </span>
-                              )}
                             </div>
 
                             <div className="mb-4 flex-1">
