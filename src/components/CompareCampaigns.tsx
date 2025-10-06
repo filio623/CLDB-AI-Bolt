@@ -681,33 +681,33 @@ const CompareCampaigns: React.FC<{
                     </div>
                     <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${analysis.structural_differences.filter(diff => diff.comparability_concern).length}, minmax(0, 1fr))` }}>
                       {analysis.structural_differences.filter(diff => diff.comparability_concern).map((diff, idx) => (
-                        <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200 flex flex-col">
+                        <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200 flex flex-col h-full">
                           <div className="p-5 flex-1 flex flex-col">
-                            <div className="mb-3 min-h-[80px]">
-                              <div className="flex items-center gap-3">
-                                <h5 className="font-bold text-lg text-gray-900">
-                                  {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
-                                </h5>
+                            {/* Header Section - Fixed Height */}
+                            <div className="mb-4">
+                              <h5 className="font-bold text-base text-gray-900 mb-3 leading-tight">
+                                {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
+                              </h5>
 
-                                <div className="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5">
-                                  <div className="flex items-center gap-2">
-                                    <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm">A</span>
-                                    <span className="font-bold text-blue-900 text-sm">{formatComparisonValue(diff.campaign_1_value, diff.factor)}</span>
-                                  </div>
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 flex-1">
+                                  <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm flex-shrink-0">A</span>
+                                  <span className="font-bold text-blue-900 text-sm truncate">{formatComparisonValue(diff.campaign_1_value, diff.factor)}</span>
+                                </div>
 
-                                  <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                  </svg>
+                                <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                </svg>
 
-                                  <div className="flex items-center gap-2">
-                                    <span className="w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm" style={{ backgroundColor: '#987D7C' }}>B</span>
-                                    <span className="font-bold text-gray-900 text-sm">{formatComparisonValue(diff.campaign_2_value, diff.factor)}</span>
-                                  </div>
+                                <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 flex-1" style={{ backgroundColor: '#F5F3F3' }}>
+                                  <span className="w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm flex-shrink-0" style={{ backgroundColor: '#987D7C' }}>B</span>
+                                  <span className="font-bold text-gray-900 text-sm truncate">{formatComparisonValue(diff.campaign_2_value, diff.factor)}</span>
                                 </div>
                               </div>
                             </div>
 
-                            <div className="flex-1">
+                            {/* Business Impact Section */}
+                            <div className="mb-4">
                               <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1.5">
                                 Business Impact
                               </p>
@@ -717,7 +717,8 @@ const CompareCampaigns: React.FC<{
                             </div>
                           </div>
 
-                          <div className="bg-gradient-to-br from-green-50 to-emerald-100 px-5 py-4 border-t-2 border-green-200">
+                          {/* Recommendation Section - Auto aligns at bottom */}
+                          <div className="bg-gradient-to-br from-green-50 to-emerald-100 px-5 py-4 border-t-2 border-green-200 mt-auto">
                             <div className="flex items-start gap-3">
                               <div className="flex-shrink-0 mt-0.5">
                                 <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
