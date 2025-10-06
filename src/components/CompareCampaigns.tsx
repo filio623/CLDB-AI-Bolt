@@ -675,16 +675,16 @@ const CompareCampaigns: React.FC<{
                         Structural Differences
                       </h4>
                     </div>
-                    <div className="space-y-4">
+                    <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${analysis.structural_differences.filter(diff => diff.comparability_concern).length}, minmax(0, 1fr))` }}>
                       {analysis.structural_differences.filter(diff => diff.comparability_concern).map((diff, idx) => (
-                        <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200">
-                          <div className="p-5">
-                            <div className="flex items-center gap-3 mb-5 pb-4 border-b border-gray-200">
-                              <h5 className="font-bold text-lg text-gray-900">
+                        <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200 flex flex-col">
+                          <div className="p-5 flex-1 flex flex-col">
+                            <div className="mb-4">
+                              <h5 className="font-bold text-lg text-gray-900 mb-3">
                                 {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
                               </h5>
 
-                              <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5">
+                              <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 mb-2">
                                 <div className="flex items-center gap-2">
                                   <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm">A</span>
                                   <span className="font-bold text-blue-900 text-sm">{formatComparisonValue(diff.campaign_1_value, diff.factor)}</span>
@@ -701,13 +701,13 @@ const CompareCampaigns: React.FC<{
                               </div>
 
                               {diff.comparability_concern && (
-                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${warningStyle.badgeColor} uppercase tracking-wide ml-auto`}>
+                                <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold ${warningStyle.badgeColor} uppercase tracking-wide`}>
                                   Concern
                                 </span>
                               )}
                             </div>
 
-                            <div>
+                            <div className="mb-4 flex-1">
                               <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">
                                 Business Impact
                               </p>
