@@ -119,6 +119,95 @@ const formatComparisonValue = (value: string | number | null, factor: string): s
   return valueStr;
 };
 
+// Component for structural differences with aligned recommendation sections
+const StructuralDifferencesGrid: React.FC<{ differences: StructuralDifference[] }> = ({ differences }) => {
+  const contentRefs = React.useRef<(HTMLDivElement | null)[]>([]);
+  const [minContentHeight, setMinContentHeight] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    const measureHeights = () => {
+      const heights = contentRefs.current
+        .filter(ref => ref !== null)
+        .map(ref => ref!.offsetHeight);
+
+      if (heights.length > 0) {
+        const maxHeight = Math.max(...heights);
+        setMinContentHeight(maxHeight);
+      }
+    };
+
+    measureHeights();
+    window.addEventListener('resize', measureHeights);
+    return () => window.removeEventListener('resize', measureHeights);
+  }, [differences]);
+
+  return (
+    <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${differences.length}, minmax(0, 1fr))` }}>
+      {differences.map((diff, idx) => (
+        <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200 flex flex-col">
+          <div
+            ref={el => contentRefs.current[idx] = el}
+            className="p-5"
+            style={{ minHeight: minContentHeight > 0 ? `${minContentHeight}px` : 'auto' }}
+          >
+            {/* Header Section */}
+            <div className="mb-4">
+              <h5 className="font-bold text-base text-gray-900 mb-3 leading-tight">
+                {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
+              </h5>
+
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 flex-1 min-w-0">
+                  <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm flex-shrink-0">A</span>
+                  <span className="font-bold text-blue-900 text-sm truncate">{formatComparisonValue(diff.campaign_1_value, diff.factor)}</span>
+                </div>
+
+                <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+
+                <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 flex-1 min-w-0" style={{ backgroundColor: '#F5F3F3' }}>
+                  <span className="w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm flex-shrink-0" style={{ backgroundColor: '#987D7C' }}>B</span>
+                  <span className="font-bold text-gray-900 text-sm truncate">{formatComparisonValue(diff.campaign_2_value, diff.factor)}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Business Impact Section */}
+            <div>
+              <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1.5">
+                Business Impact
+              </p>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {diff.business_impact}
+              </p>
+            </div>
+          </div>
+
+          {/* Recommendation Section - Now aligned */}
+          <div className="bg-gradient-to-br from-green-50 to-emerald-100 px-5 py-4 border-t-2 border-green-200">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 mt-0.5">
+                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-bold text-green-900 uppercase tracking-wider mb-1.5">
+                  Recommendation
+                </p>
+                <p className="text-sm text-gray-800 leading-relaxed font-medium">
+                  {diff.recommendation}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const CompareCampaigns: React.FC<{
   selectedClient: Client | null;
 }> = ({
@@ -679,65 +768,7 @@ const CompareCampaigns: React.FC<{
                         Structural Differences
                       </h4>
                     </div>
-                    <div className="grid gap-4 items-start" style={{ gridTemplateColumns: `repeat(${analysis.structural_differences.filter(diff => diff.comparability_concern).length}, minmax(0, 1fr))`, gridAutoRows: '1fr' }}>
-                      {analysis.structural_differences.filter(diff => diff.comparability_concern).map((diff, idx) => (
-                        <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200 grid grid-rows-[auto_1fr] h-full">
-                          <div className="p-5">
-                            {/* Header Section */}
-                            <div className="mb-4">
-                              <h5 className="font-bold text-base text-gray-900 mb-3 leading-tight">
-                                {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
-                              </h5>
-
-                              <div className="flex items-center justify-between gap-3">
-                                <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 flex-1">
-                                  <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm flex-shrink-0">A</span>
-                                  <span className="font-bold text-blue-900 text-sm truncate">{formatComparisonValue(diff.campaign_1_value, diff.factor)}</span>
-                                </div>
-
-                                <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                </svg>
-
-                                <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 flex-1" style={{ backgroundColor: '#F5F3F3' }}>
-                                  <span className="w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm flex-shrink-0" style={{ backgroundColor: '#987D7C' }}>B</span>
-                                  <span className="font-bold text-gray-900 text-sm truncate">{formatComparisonValue(diff.campaign_2_value, diff.factor)}</span>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Business Impact Section */}
-                            <div>
-                              <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1.5">
-                                Business Impact
-                              </p>
-                              <p className="text-sm text-gray-700 leading-relaxed">
-                                {diff.business_impact}
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Recommendation Section - Grid ensures alignment */}
-                          <div className="bg-gradient-to-br from-green-50 to-emerald-100 px-5 py-4 border-t-2 border-green-200 self-end">
-                            <div className="flex items-start gap-3">
-                              <div className="flex-shrink-0 mt-0.5">
-                                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="text-xs font-bold text-green-900 uppercase tracking-wider mb-1.5">
-                                  Recommendation
-                                </p>
-                                <p className="text-sm text-gray-800 leading-relaxed font-medium">
-                                  {diff.recommendation}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                    <StructuralDifferencesGrid differences={analysis.structural_differences.filter(diff => diff.comparability_concern)} />
                   </div>
                 )}
               </div>
