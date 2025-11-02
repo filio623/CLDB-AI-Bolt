@@ -9,9 +9,16 @@
 
 // Auto-detect API base URL based on environment
 const getAPIBaseURL = (): string => {
-  // Check if we're in development (localhost) or production
+  // PRIORITY 1: Check for ngrok URL in localStorage (for bolt.new development)
+  const ngrokURL = localStorage.getItem('NGROK_API_URL');
+  if (ngrokURL) {
+    console.log('🔗 Using ngrok backend:', ngrokURL);
+    return `${ngrokURL}/api/v1`;
+  }
+
+  // PRIORITY 2: Check if we're in development (localhost) or production
   const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-  
+
   if (isLocalhost) {
     // Development: use localhost backend
     return 'http://localhost:8000/api/v1';
@@ -22,6 +29,21 @@ const getAPIBaseURL = (): string => {
 };
 
 const API_BASE_URL = getAPIBaseURL();
+
+// Helper function to get default headers with ngrok bypass
+const getDefaultHeaders = (): HeadersInit => {
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  };
+
+  // Add ngrok bypass header if using ngrok
+  const ngrokURL = localStorage.getItem('NGROK_API_URL');
+  if (ngrokURL) {
+    headers['ngrok-skip-browser-warning'] = 'true';
+  }
+
+  return headers;
+};
 
 // ========== TYPE DEFINITIONS ==========
 // These match exactly the backend Pydantic models
@@ -315,7 +337,9 @@ export const apiService = {
    */
   async getClients(): Promise<Client[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/clients`);
+      const response = await fetch(`${API_BASE_URL}/clients`, {
+        headers: getDefaultHeaders(),
+      });
       return await handleResponse<Client[]>(response);
     } catch (error) {
       if (error instanceof APIError) {
@@ -331,7 +355,9 @@ export const apiService = {
    */
   async getCampaignsByClient(clientId: number): Promise<CampaignSummary[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/campaigns/by-client/${clientId}`);
+      const response = await fetch(`${API_BASE_URL}/campaigns/by-client/${clientId}`, {
+        headers: getDefaultHeaders(),
+      });
       return await handleResponse<CampaignSummary[]>(response);
     } catch (error) {
       if (error instanceof APIError) {
@@ -346,12 +372,14 @@ export const apiService = {
    * Endpoint: GET /api/v1/campaigns/{campaign_id}/similar-duration
    */
   async getSimilarCampaigns(
-    campaignId: number, 
+    campaignId: number,
     durationTolerance: number = 2.0
   ): Promise<CampaignSummary[]> {
     try {
       const url = `${API_BASE_URL}/campaigns/${campaignId}/similar-duration?duration_tolerance=${durationTolerance}`;
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        headers: getDefaultHeaders(),
+      });
       return await handleResponse<CampaignSummary[]>(response);
     } catch (error) {
       if (error instanceof APIError) {
@@ -369,9 +397,7 @@ export const apiService = {
     try {
       const response = await fetch(`${API_BASE_URL}/compare`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getDefaultHeaders(),
         body: JSON.stringify(request),
       });
       return await handleResponse<CompareResponse>(response);
@@ -391,9 +417,7 @@ export const apiService = {
     try {
       const response = await fetch(`${API_BASE_URL}/industry-benchmark`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getDefaultHeaders(),
         body: JSON.stringify(request),
       });
       return await handleResponse<BenchmarkResponse>(response);
@@ -413,9 +437,7 @@ export const apiService = {
     try {
       const response = await fetch(`${API_BASE_URL}/calculate-roi`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getDefaultHeaders(),
         body: JSON.stringify(request),
       });
       return await handleResponse<ROIResponse>(response);
@@ -491,9 +513,7 @@ export const apiService = {
 
       const response = await fetch(`${API_BASE_URL}/advanced-roi/simple`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getDefaultHeaders(),
         body: JSON.stringify(request),
       });
       return await handleResponse<AdvancedROIResponse>(response);
@@ -540,7 +560,9 @@ export const apiService = {
    */
   async healthCheck(): Promise<{ status: string }> {
     try {
-      const response = await fetch(`${API_BASE_URL.replace('/api/v1', '')}/health`);
+      const response = await fetch(`${API_BASE_URL.replace('/api/v1', '')}/health`, {
+        headers: getDefaultHeaders(),
+      });
       return await handleResponse<{ status: string }>(response);
     } catch (error) {
       throw new APIError(`API health check failed: ${error instanceof Error ? error.message : 'Network error'}`);
