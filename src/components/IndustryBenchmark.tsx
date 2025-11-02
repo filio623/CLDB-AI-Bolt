@@ -95,6 +95,30 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
       (position: any) => position.metric_name.toLowerCase().includes(metricName.toLowerCase())
     );
   };
+
+  // KPI Tooltip component matching Compare module style
+  const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    return (
+      <div className="relative">
+        <div
+          className="w-4 h-4 bg-gray-600 hover:bg-gray-700 rounded-full flex items-center justify-center cursor-help transition-colors"
+          onMouseEnter={() => setIsVisible(true)}
+          onMouseLeave={() => setIsVisible(false)}
+        >
+          <span className="text-white text-xs font-bold">i</span>
+        </div>
+        {isVisible && (
+          <div className="absolute w-64 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50 bottom-6 left-1/2 transform -translate-x-1/2">
+            <div className="absolute w-2 h-2 bg-gray-900 rotate-45 -bottom-1 left-1/2 transform -translate-x-1/2"></div>
+            {content}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-8">
       {/* Page Header */}
@@ -189,7 +213,7 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
         {/* Main Content Area */}
         <div className="lg:col-span-2">
           {/* Campaign Overview */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-10 h-10 bg-gradient-to-r from-orange-600 to-yellow-600 rounded-lg flex items-center justify-center">
                 <Trophy className="w-5 h-5 text-white" />
@@ -200,26 +224,26 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
-              <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 border border-orange-200 shadow-sm">
-                <h3 className="text-base font-bold text-gray-900 mb-2 flex items-center space-x-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 border border-orange-200 shadow-sm">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center space-x-2">
                   <Building2 className="w-5 h-5 text-orange-600" />
                   <span>Campaign Details</span>
                 </h3>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between py-1 border-b border-orange-200">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between py-2 border-b border-orange-200">
                     <span className="text-sm font-medium text-gray-600">Campaign</span>
                     <span className="text-sm font-semibold text-gray-900">
                       {benchmarkResult?.campaign_summary?.name || selectedCampaign?.name || '---'}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between py-1 border-b border-orange-200">
+                  <div className="flex items-center justify-between py-2 border-b border-orange-200">
                     <span className="text-sm font-medium text-gray-600">Client</span>
                     <span className="text-sm font-semibold text-gray-900">
                       {benchmarkResult?.campaign_summary?.client_name || selectedCampaign?.client_name || '---'}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between py-1 border-b border-orange-200">
+                  <div className="flex items-center justify-between py-2 border-b border-orange-200">
                     <span className="text-sm font-medium text-gray-600">Duration</span>
                     <span className="text-sm font-semibold text-gray-900">
                       {benchmarkResult?.campaign_summary?.duration_days 
@@ -230,7 +254,7 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
                       }
                     </span>
                   </div>
-                  <div className="flex items-center justify-between py-1">
+                  <div className="flex items-center justify-between py-2 border-b border-orange-200">
                     <span className="text-sm font-medium text-gray-600">Industry</span>
                     <span className="text-sm font-semibold text-gray-900">
                       {benchmarkResult?.campaign_summary?.industry || selectedCampaign?.industry || '---'}
@@ -239,20 +263,20 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200 shadow-sm">
-                <h3 className="text-base font-bold text-gray-900 mb-2 flex items-center space-x-2">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200 shadow-sm">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center space-x-2">
                   <Award className="w-5 h-5 text-blue-600" />
                   <span>Industry Position Summary</span>
                 </h3>
-                <div className="space-y-3">
-                  <div className="text-center p-3 bg-white rounded-lg border border-blue-200">
+                <div className="space-y-4">
+                  <div className="text-center p-4 bg-white rounded-lg border border-blue-200">
                     <p className="text-sm font-medium text-gray-600 mb-2">Overall Industry Grade</p>
-                    <div className="inline-flex items-center px-3 py-1 rounded-full text-base font-bold bg-orange-100 text-orange-800 border border-orange-300">
+                    <div className="inline-flex items-center px-4 py-2 rounded-full text-lg font-bold bg-orange-100 text-orange-800 border border-orange-300">
                       {benchmarkResult?.overall_industry_grade || '---'}
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between py-1 border-b border-blue-200">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between py-2 border-b border-blue-200">
                       <span className="text-sm font-medium text-gray-600">Industry Percentile</span>
                       <span className="text-sm font-semibold text-blue-700">
                         {benchmarkResult?.overall_percentile 
@@ -261,7 +285,7 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
                         }
                       </span>
                     </div>
-                    <div className="flex items-center justify-between py-1">
+                    <div className="flex items-center justify-between py-2">
                       <span className="text-sm font-medium text-gray-600">Industry Cohort</span>
                       <span className="text-sm font-semibold text-gray-900">
                         {benchmarkResult?.industry_cohort 
@@ -281,9 +305,12 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
 
       {/* Industry Benchmark Metrics - Full Width */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 relative">
+          <div className="absolute top-3 right-3">
+            <KPITooltip content="Average number of digital impressions generated per piece of mail sent. Shows how well your direct mail drives online visibility." />
+          </div>
           <div className="text-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Click-Through Rate (CTR)</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Impressions per Piece</h3>
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Target className="w-8 h-8 text-blue-600" />
             </div>
@@ -294,8 +321,8 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
               <p className="text-sm text-gray-600 mb-1">Industry Median</p>
               <p className="text-2xl font-bold text-gray-900">
                 {(() => {
-                  const ctrData = getMetricData('ctr');
-                  return ctrData ? `${ctrData.industry_median.toFixed(2)}%` : '---';
+                  const impressionsData = getMetricData('impressions');
+                  return impressionsData ? impressionsData.industry_median.toFixed(2) : '---';
                 })()}
               </p>
             </div>
@@ -313,8 +340,8 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
                 );
               }
               
-              const ctrData = getMetricData('ctr');
-              if (!ctrData) {
+              const impressionsData = getMetricData('impressions');
+              if (!impressionsData) {
                 return (
                   <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-lg">
                     <p className="text-sm text-gray-600 mb-1">Your Campaign</p>
@@ -324,7 +351,7 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
                 );
               }
               
-              const isPositive = ctrData.industry_percentile >= 50;
+              const isPositive = impressionsData.industry_percentile >= 50;
               const bgColor = isPositive ? 'bg-green-50' : 'bg-red-50';
               const borderColor = isPositive ? 'border-green-200' : 'border-red-200';
               const textColor = isPositive ? 'text-green-700' : 'text-red-700';
@@ -335,15 +362,15 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
                 <div className={`text-center p-4 ${bgColor} ${borderColor} rounded-lg`}>
                   <p className="text-sm text-gray-600 mb-1">Your Campaign</p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {ctrData.campaign_value.toFixed(2)}%
+                    {impressionsData.campaign_value.toFixed(2)}
                   </p>
                   <div className="flex items-center justify-center space-x-2 mt-2">
                     <TrendIcon className={`w-4 h-4 ${iconColor}`} />
                     <span className={`${textColor} font-semibold`}>
-                      {ctrData.rank_description}
+                      {impressionsData.rank_description}
                     </span>
                     <span className={iconColor}>
-                      ({ctrData.industry_percentile.toFixed(1)}th percentile)
+                      ({impressionsData.industry_percentile.toFixed(1)}th percentile)
                     </span>
                   </div>
                 </div>
@@ -352,9 +379,12 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 relative">
+          <div className="absolute top-3 right-3">
+            <KPITooltip content="Average number of interactions (clicks, calls, leads, etc.) generated per piece of mail sent. Higher numbers indicate more engaging campaigns." />
+          </div>
           <div className="text-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Lead Match</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Engagement Rate</h3>
             <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Award className="w-8 h-8 text-purple-600" />
             </div>
@@ -365,8 +395,8 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
               <p className="text-sm text-gray-600 mb-1">Industry Median</p>
               <p className="text-2xl font-bold text-gray-900">
                 {(() => {
-                  const leadsData = getMetricData('leads');
-                  return leadsData ? leadsData.industry_median.toLocaleString() : '---';
+                  const engagementData = getMetricData('engagement');
+                  return engagementData ? engagementData.industry_median.toFixed(2) : '---';
                 })()}
               </p>
             </div>
@@ -384,8 +414,8 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
                 );
               }
               
-              const leadsData = getMetricData('leads');
-              if (!leadsData) {
+              const engagementData = getMetricData('engagement');
+              if (!engagementData) {
                 return (
                   <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-lg">
                     <p className="text-sm text-gray-600 mb-1">Your Campaign</p>
@@ -395,7 +425,7 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
                 );
               }
               
-              const isPositive = leadsData.industry_percentile >= 50;
+              const isPositive = engagementData.industry_percentile >= 50;
               const bgColor = isPositive ? 'bg-green-50' : 'bg-red-50';
               const borderColor = isPositive ? 'border-green-200' : 'border-red-200';
               const textColor = isPositive ? 'text-green-700' : 'text-red-700';
@@ -406,15 +436,15 @@ const IndustryBenchmark: React.FC<IndustryBenchmarkProps> = ({ selectedClient })
                 <div className={`text-center p-4 ${bgColor} ${borderColor} rounded-lg`}>
                   <p className="text-sm text-gray-600 mb-1">Your Campaign</p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {leadsData.campaign_value.toLocaleString()}
+                    {engagementData.campaign_value.toFixed(2)}
                   </p>
                   <div className="flex items-center justify-center space-x-2 mt-2">
                     <TrendIcon className={`w-4 h-4 ${iconColor}`} />
                     <span className={`${textColor} font-semibold`}>
-                      {leadsData.rank_description}
+                      {engagementData.rank_description}
                     </span>
                     <span className={iconColor}>
-                      ({leadsData.industry_percentile.toFixed(1)}th percentile)
+                      ({engagementData.industry_percentile.toFixed(1)}th percentile)
                     </span>
                   </div>
                 </div>

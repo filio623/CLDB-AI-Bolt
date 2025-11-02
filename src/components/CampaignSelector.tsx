@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronDown, Search, Zap, Building2, Target, BarChart3 } from 'lucide-react';
+import { ChevronDown, Search, Zap } from 'lucide-react';
 
 const CampaignSelector: React.FC = () => {
   return (

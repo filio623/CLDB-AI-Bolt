@@ -91,148 +91,16 @@ const KPITooltip: React.FC<{ content: string }> = ({ content }) => {
   );
 };
 
-const formatComparisonValue = (value: string | number | null, factor: string): string => {
-  if (value === null || value === undefined) return 'N/A';
-
-  const valueStr = String(value);
-  const lowerFactor = factor.toLowerCase();
-
-  if (lowerFactor === 'campaign_duration') {
-    const numValue = parseInt(valueStr);
-    return `${numValue} ${numValue === 1 ? 'day' : 'days'}`;
-  }
-
-  if (lowerFactor === 'total_pieces_mailed') {
-    const numValue = parseInt(valueStr.replace(/,/g, ''));
-    return `${numValue.toLocaleString()} pcs`;
-  }
-
-  if (lowerFactor === 'number_of_mailings') {
-    const numValue = parseInt(valueStr);
-    return `${numValue} ${numValue === 1 ? 'mailing' : 'mailings'}`;
-  }
-
-  if (lowerFactor.includes('job_type') || lowerFactor.includes('jobtype')) {
-    return valueStr.replace(/JobType\./g, '');
-  }
-
-  return valueStr;
-};
-
-// Component for structural differences with aligned recommendation sections
-const StructuralDifferencesGrid: React.FC<{ differences: StructuralDifference[] }> = ({ differences }) => {
-  const contentRefs = React.useRef<(HTMLDivElement | null)[]>([]);
-  const recommendationRefs = React.useRef<(HTMLDivElement | null)[]>([]);
-  const [minContentHeight, setMinContentHeight] = React.useState<number>(0);
-  const [minRecommendationHeight, setMinRecommendationHeight] = React.useState<number>(0);
-
-  React.useEffect(() => {
-    const measureHeights = () => {
-      const contentHeights = contentRefs.current
-        .filter(ref => ref !== null)
-        .map(ref => ref!.offsetHeight);
-
-      const recommendationHeights = recommendationRefs.current
-        .filter(ref => ref !== null)
-        .map(ref => ref!.offsetHeight);
-
-      if (contentHeights.length > 0) {
-        const maxContentHeight = Math.max(...contentHeights);
-        setMinContentHeight(maxContentHeight);
-      }
-
-      if (recommendationHeights.length > 0) {
-        const maxRecommendationHeight = Math.max(...recommendationHeights);
-        setMinRecommendationHeight(maxRecommendationHeight);
-      }
-    };
-
-    measureHeights();
-    window.addEventListener('resize', measureHeights);
-    return () => window.removeEventListener('resize', measureHeights);
-  }, [differences]);
-
-  return (
-    <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${differences.length}, minmax(0, 1fr))` }}>
-      {differences.map((diff, idx) => (
-        <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200 flex flex-col">
-          <div
-            ref={el => contentRefs.current[idx] = el}
-            className="p-5"
-            style={{ minHeight: minContentHeight > 0 ? `${minContentHeight}px` : 'auto' }}
-          >
-            {/* Header Section */}
-            <div className="mb-4">
-              <h5 className="font-bold text-base text-gray-900 mb-3 leading-tight">
-                {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
-              </h5>
-
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 flex-1 min-w-0">
-                  <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm flex-shrink-0">A</span>
-                  <span className="font-bold text-blue-900 text-sm truncate">{formatComparisonValue(diff.campaign_1_value, diff.factor)}</span>
-                </div>
-
-                <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-
-                <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 flex-1 min-w-0" style={{ backgroundColor: '#F5F3F3' }}>
-                  <span className="w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm flex-shrink-0" style={{ backgroundColor: '#987D7C' }}>B</span>
-                  <span className="font-bold text-gray-900 text-sm truncate">{formatComparisonValue(diff.campaign_2_value, diff.factor)}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Business Impact Section */}
-            <div>
-              <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1.5">
-                Business Impact
-              </p>
-              <p className="text-sm text-gray-700 leading-relaxed">
-                {diff.business_impact}
-              </p>
-            </div>
-          </div>
-
-          {/* Recommendation Section - Now aligned */}
-          <div
-            ref={el => recommendationRefs.current[idx] = el}
-            className="bg-gradient-to-br from-green-50 to-emerald-100 px-5 py-4 border-t-2 border-green-200"
-            style={{ minHeight: minRecommendationHeight > 0 ? `${minRecommendationHeight}px` : 'auto' }}
-          >
-            <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 mt-0.5">
-                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold text-green-900 uppercase tracking-wider mb-1.5">
-                  Recommendation
-                </p>
-                <p className="text-sm text-gray-800 leading-relaxed font-medium">
-                  {diff.recommendation}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-const CompareCampaigns: React.FC<{
+interface CompareCampaignsProps {
   selectedClient: Client | null;
-}> = ({
-  selectedClient
-}) => {
-  // Internal state management
+}
+
+const CompareCampaigns: React.FC<CompareCampaignsProps> = ({ selectedClient }) => {
+  // Compare tab specific state
   const [campaigns, setCampaigns] = useState<CampaignSummary[]>([]);
+  const [similarCampaigns, setSimilarCampaigns] = useState<CampaignSummary[]>([]);
   const [primaryCampaign, setPrimaryCampaign] = useState<CampaignSummary | null>(null);
   const [comparisonCampaign, setComparisonCampaign] = useState<CampaignSummary | null>(null);
-  const [similarCampaigns, setSimilarCampaigns] = useState<CampaignSummary[]>([]);
   const [compareResult, setCompareResult] = useState<CompareResponse | null>(null);
 
   // Loading states
@@ -306,6 +174,12 @@ const CompareCampaigns: React.FC<{
     loadSimilarCampaigns();
   }, [primaryCampaign]);
 
+  // Effect: Clear comparison results when campaigns change
+  useEffect(() => {
+    setCompareResult(null);
+    setAnalysisError(null);
+  }, [primaryCampaign, comparisonCampaign]);
+
   // Handle analyze button click
   const handleAnalyze = async () => {
     if (!primaryCampaign || !comparisonCampaign) {
@@ -331,7 +205,7 @@ const CompareCampaigns: React.FC<{
   };
 
   // Helper function to render individual KPI card
-  const renderKPICard = (kpiName: string, kpiData?: KPIMetricData) => {
+  const renderKPICard = (kpiName: string, kpiData?: KPIMetricData, campaignAName?: string, campaignBName?: string) => {
     const kpiDisplayNames: Record<string, string> = {
       'ad_displays': 'Ad Displays',
       'engagements': 'Engagements',
@@ -390,6 +264,12 @@ const CompareCampaigns: React.FC<{
     const percentColor = isPositive ? 'text-green-700' : 'text-red-700';
     const sign = kpiData.change_percent >= 0 ? '+' : '';
 
+    // Helper to truncate long campaign names
+    const truncateName = (name: string | undefined, maxLength: number = 20) => {
+      if (!name) return '';
+      return name.length > maxLength ? name.substring(0, maxLength) + '...' : name;
+    };
+
     return (
       <div key={kpiName} className={`${bgColor} border ${borderColor} rounded-xl p-4 text-center relative`}>
         <div className="absolute top-3 right-3">
@@ -399,17 +279,35 @@ const CompareCampaigns: React.FC<{
         <p className={`text-2xl font-bold ${percentColor} mb-3`}>
           {sign}{kpiData.change_percent.toFixed(1)}%
         </p>
-        <div className="flex items-center justify-center space-x-2 mb-2">
-          <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center">
-            <span className="text-xs font-bold text-white">A</span>
+
+        {/* Campaign A - Primary */}
+        <div className="mb-2">
+          <div className="flex items-center justify-center space-x-2 mb-1">
+            <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+              <span className="text-xs font-bold text-white">A</span>
+            </div>
+            <p className="text-xl font-bold text-gray-900">{kpiData.current.toLocaleString()}</p>
           </div>
-          <p className="text-xl font-bold text-gray-900">{kpiData.current.toLocaleString()}</p>
+          {campaignAName && (
+            <p className="text-xs text-blue-600 font-medium truncate px-1" title={campaignAName}>
+              {truncateName(campaignAName, 22)}
+            </p>
+          )}
         </div>
-        <div className="flex items-center justify-center space-x-2">
-          <div className="w-4 h-4 rounded-full flex items-center justify-center" style={{ backgroundColor: '#987D7C' }}>
-            <span className="text-xs font-bold text-white">B</span>
+
+        {/* Campaign B - Comparison */}
+        <div>
+          <div className="flex items-center justify-center space-x-2 mb-1">
+            <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#987D7C' }}>
+              <span className="text-xs font-bold text-white">B</span>
+            </div>
+            <p className="text-base font-semibold text-gray-700">{kpiData.previous.toLocaleString()}</p>
           </div>
-          <p className="text-base font-semibold text-gray-700">{kpiData.previous.toLocaleString()}</p>
+          {campaignBName && (
+            <p className="text-xs font-medium truncate px-1" style={{ color: '#987D7C' }} title={campaignBName}>
+              {truncateName(campaignBName, 22)}
+            </p>
+          )}
         </div>
       </div>
     );
@@ -472,6 +370,139 @@ const CompareCampaigns: React.FC<{
   const formatNumber = (num: number | null | undefined): string => {
     if (num === null || num === undefined) return 'N/A';
     return num.toLocaleString();
+  };
+
+  // Helper function to format comparison values with proper units
+  const formatComparisonValue = (value: string | number | null, factor: string): string => {
+    if (value === null || value === undefined) return 'N/A';
+    
+    const valueStr = String(value);
+    const lowerFactor = factor.toLowerCase();
+    
+    if (lowerFactor === 'campaign_duration') {
+      const numValue = parseInt(valueStr);
+      return `${numValue} ${numValue === 1 ? 'day' : 'days'}`;
+    }
+    
+    if (lowerFactor === 'total_pieces_mailed') {
+      const numValue = parseInt(valueStr.replace(/,/g, ''));
+      return `${numValue.toLocaleString()} pcs`;
+    }
+    
+    if (lowerFactor === 'number_of_mailings') {
+      const numValue = parseInt(valueStr);
+      return `${numValue} ${numValue === 1 ? 'mailing' : 'mailings'}`;
+    }
+    
+    if (lowerFactor.includes('job_type') || lowerFactor.includes('jobtype')) {
+      return valueStr.replace(/JobType\./g, '');
+    }
+    
+    return valueStr;
+  };
+
+  // Component for structural differences with aligned recommendation sections
+  const StructuralDifferencesGrid: React.FC<{ differences: StructuralDifference[] }> = ({ differences }) => {
+    const contentRefs = React.useRef<(HTMLDivElement | null)[]>([]);
+    const recommendationRefs = React.useRef<(HTMLDivElement | null)[]>([]);
+    const [minContentHeight, setMinContentHeight] = React.useState<number>(0);
+    const [minRecommendationHeight, setMinRecommendationHeight] = React.useState<number>(0);
+
+    React.useEffect(() => {
+      const measureHeights = () => {
+        const contentHeights = contentRefs.current
+          .filter(ref => ref !== null)
+          .map(ref => ref!.offsetHeight);
+
+        const recommendationHeights = recommendationRefs.current
+          .filter(ref => ref !== null)
+          .map(ref => ref!.offsetHeight);
+
+        if (contentHeights.length > 0) {
+          const maxContentHeight = Math.max(...contentHeights);
+          setMinContentHeight(maxContentHeight);
+        }
+
+        if (recommendationHeights.length > 0) {
+          const maxRecommendationHeight = Math.max(...recommendationHeights);
+          setMinRecommendationHeight(maxRecommendationHeight);
+        }
+      };
+
+      measureHeights();
+      window.addEventListener('resize', measureHeights);
+      return () => window.removeEventListener('resize', measureHeights);
+    }, [differences]);
+
+    return (
+      <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${differences.length}, minmax(0, 1fr))` }}>
+        {differences.map((diff, idx) => (
+          <div key={idx} className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 transition-colors duration-200 flex flex-col">
+            <div
+              ref={el => contentRefs.current[idx] = el}
+              className="p-5"
+              style={{ minHeight: minContentHeight > 0 ? `${minContentHeight}px` : 'auto' }}
+            >
+              {/* Header Section */}
+              <div className="mb-4">
+                <h5 className="font-bold text-base text-gray-900 mb-3 leading-tight">
+                  {diff.factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
+                </h5>
+
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 flex-1 min-w-0">
+                    <span className="w-5 h-5 bg-blue-600 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm flex-shrink-0">A</span>
+                    <span className="font-bold text-blue-900 text-sm truncate">{formatComparisonValue(diff.campaign_1_value, diff.factor)}</span>
+                  </div>
+
+                  <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+
+                  <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 flex-1 min-w-0" style={{ backgroundColor: '#F5F3F3' }}>
+                    <span className="w-5 h-5 rounded text-white text-[10px] font-bold flex items-center justify-center shadow-sm flex-shrink-0" style={{ backgroundColor: '#987D7C' }}>B</span>
+                    <span className="font-bold text-gray-900 text-sm truncate">{formatComparisonValue(diff.campaign_2_value, diff.factor)}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Business Impact Section */}
+              <div>
+                <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1.5">
+                  Business Impact
+                </p>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  {diff.business_impact}
+                </p>
+              </div>
+            </div>
+
+            {/* Recommendation Section - Now aligned */}
+            <div
+              ref={el => recommendationRefs.current[idx] = el}
+              className="bg-gradient-to-br from-green-50 to-emerald-100 px-5 py-4 border-t-2 border-green-200"
+              style={{ minHeight: minRecommendationHeight > 0 ? `${minRecommendationHeight}px` : 'auto' }}
+            >
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 mt-0.5">
+                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold text-green-900 uppercase tracking-wider mb-1.5">
+                    Recommendation
+                  </p>
+                  <p className="text-sm text-gray-800 leading-relaxed font-medium">
+                    {diff.recommendation}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -701,7 +732,7 @@ const CompareCampaigns: React.FC<{
       {compareResult?.structural_analysis && (
         (() => {
           const analysis = compareResult.structural_analysis;
-
+          
           // Determine warning level and styling based on comparability
           const getWarningStyle = (comparability: string) => {
             switch (comparability.toLowerCase()) {
@@ -756,7 +787,7 @@ const CompareCampaigns: React.FC<{
           };
 
           const warningStyle = getWarningStyle(analysis.overall_comparability);
-
+          
           // Only show warning if comparability is not 'High'
           if (!warningStyle) return null;
 
@@ -830,21 +861,39 @@ const CompareCampaigns: React.FC<{
                   {compareResult.metrics_comparison.impressions_per_piece.change_percent >= 0 ? '+' : ''}
                   {compareResult.metrics_comparison.impressions_per_piece.change_percent.toFixed(1)}%
                 </p>
-                <div className="flex items-center justify-center space-x-3 mb-3">
-                  <div className="w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-bold text-white">A</span>
+
+                {/* Campaign A - Primary */}
+                <div className="mb-3">
+                  <div className="flex items-center justify-center space-x-3 mb-1">
+                    <div className="w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-xs font-bold text-white">A</span>
+                    </div>
+                    <p className="text-xl font-bold text-gray-900">
+                      {compareResult.metrics_comparison.impressions_per_piece.current.toFixed(1)}
+                    </p>
                   </div>
-                  <p className="text-xl font-bold text-gray-900">
-                    {compareResult.metrics_comparison.impressions_per_piece.current.toFixed(1)}
-                  </p>
+                  {primaryCampaign?.name && (
+                    <p className="text-xs text-blue-600 font-medium truncate px-1" title={primaryCampaign.name}>
+                      {primaryCampaign.name.length > 25 ? primaryCampaign.name.substring(0, 25) + '...' : primaryCampaign.name}
+                    </p>
+                  )}
                 </div>
-                <div className="flex items-center justify-center space-x-3">
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: '#987D7C' }}>
-                    <span className="text-xs font-bold text-white">B</span>
+
+                {/* Campaign B - Comparison */}
+                <div>
+                  <div className="flex items-center justify-center space-x-3 mb-1">
+                    <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#987D7C' }}>
+                      <span className="text-xs font-bold text-white">B</span>
+                    </div>
+                    <p className="text-lg font-semibold text-gray-700">
+                      {compareResult.metrics_comparison.impressions_per_piece.previous.toFixed(1)}
+                    </p>
                   </div>
-                  <p className="text-lg font-semibold text-gray-700">
-                    {compareResult.metrics_comparison.impressions_per_piece.previous.toFixed(1)}
-                  </p>
+                  {comparisonCampaign?.name && (
+                    <p className="text-xs font-medium truncate px-1" style={{ color: '#987D7C' }} title={comparisonCampaign.name}>
+                      {comparisonCampaign.name.length > 25 ? comparisonCampaign.name.substring(0, 25) + '...' : comparisonCampaign.name}
+                    </p>
+                  )}
                 </div>
               </>
             ) : (
@@ -884,21 +933,39 @@ const CompareCampaigns: React.FC<{
                   {compareResult.metrics_comparison.engagement_rate.change_percent >= 0 ? '+' : ''}
                   {compareResult.metrics_comparison.engagement_rate.change_percent.toFixed(1)}%
                 </p>
-                <div className="flex items-center justify-center space-x-3 mb-3">
-                  <div className="w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-bold text-white">A</span>
+
+                {/* Campaign A - Primary */}
+                <div className="mb-3">
+                  <div className="flex items-center justify-center space-x-3 mb-1">
+                    <div className="w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-xs font-bold text-white">A</span>
+                    </div>
+                    <p className="text-xl font-bold text-gray-900">
+                      {compareResult.metrics_comparison.engagement_rate.current.toFixed(2)}%
+                    </p>
                   </div>
-                  <p className="text-xl font-bold text-gray-900">
-                    {compareResult.metrics_comparison.engagement_rate.current.toFixed(2)}%
-                  </p>
+                  {primaryCampaign?.name && (
+                    <p className="text-xs text-blue-600 font-medium truncate px-1" title={primaryCampaign.name}>
+                      {primaryCampaign.name.length > 25 ? primaryCampaign.name.substring(0, 25) + '...' : primaryCampaign.name}
+                    </p>
+                  )}
                 </div>
-                <div className="flex items-center justify-center space-x-3">
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: '#987D7C' }}>
-                    <span className="text-xs font-bold text-white">B</span>
+
+                {/* Campaign B - Comparison */}
+                <div>
+                  <div className="flex items-center justify-center space-x-3 mb-1">
+                    <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#987D7C' }}>
+                      <span className="text-xs font-bold text-white">B</span>
+                    </div>
+                    <p className="text-lg font-semibold text-gray-700">
+                      {compareResult.metrics_comparison.engagement_rate.previous.toFixed(2)}%
+                    </p>
                   </div>
-                  <p className="text-lg font-semibold text-gray-700">
-                    {compareResult.metrics_comparison.engagement_rate.previous.toFixed(2)}%
-                  </p>
+                  {comparisonCampaign?.name && (
+                    <p className="text-xs font-medium truncate px-1" style={{ color: '#987D7C' }} title={comparisonCampaign.name}>
+                      {comparisonCampaign.name.length > 25 ? comparisonCampaign.name.substring(0, 25) + '...' : comparisonCampaign.name}
+                    </p>
+                  )}
                 </div>
               </>
             ) : (
@@ -919,9 +986,11 @@ const CompareCampaigns: React.FC<{
           {(() => {
             const kpiData = getKPIData();
             const kpiMetrics = ['ad_displays', 'engagements', 'visitors', 'leads', 'attributions'];
+            const campaignAName = primaryCampaign?.name;
+            const campaignBName = comparisonCampaign?.name;
 
             return kpiMetrics.map(kpi =>
-              renderKPICard(kpi, kpiData?.[kpi])
+              renderKPICard(kpi, kpiData?.[kpi], campaignAName, campaignBName)
             );
           })()}
         </div>

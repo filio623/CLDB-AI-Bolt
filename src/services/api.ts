@@ -9,12 +9,6 @@
 
 // Auto-detect API base URL based on environment
 const getAPIBaseURL = (): string => {
-  // For bolt.new: check if ngrok URL is set in localStorage
-  const ngrokURL = localStorage.getItem('NGROK_API_URL');
-  if (ngrokURL) {
-    return `${ngrokURL}/api/v1`;
-  }
-  
   // Check if we're in development (localhost) or production
   const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
   
@@ -27,20 +21,7 @@ const getAPIBaseURL = (): string => {
   }
 };
 
-// Default headers for all requests (including ngrok bypass)
-const getDefaultHeaders = () => {
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-  };
-  
-  // Add ngrok bypass header if using ngrok URL
-  const ngrokURL = localStorage.getItem('NGROK_API_URL');
-  if (ngrokURL) {
-    headers['ngrok-skip-browser-warning'] = 'true';
-  }
-  
-  return headers;
-};
+const API_BASE_URL = getAPIBaseURL();
 
 // ========== TYPE DEFINITIONS ==========
 // These match exactly the backend Pydantic models
@@ -121,16 +102,12 @@ export interface StructuralDifference {
 
 export interface StructuralAnalysis {
   overall_comparability: string; // "High", "Moderate", "Low", "Not Recommended"
-  major_concerns: string[]; // Top-level warnings about comparison validity
   structural_differences: StructuralDifference[];
   interpretation_guidance: string; // How to interpret KPI results given these differences
 }
 
 export interface CompareRequest {
   campaign_ids: number[];
-  comparison_type?: 'performance' | 'audience' | 'creative' | 'financial' | 'comprehensive';
-  confidence_threshold?: number;
-  focus_metrics?: string[];
 }
 
 // Interface for individual KPI metric data structure
@@ -161,12 +138,9 @@ export interface CompareResponse {
 export interface BenchmarkRequest {
   campaign_id: number;
   industry?: string;
+  // Future feature placeholders (not yet implemented)
   job_type?: string;
-  geographic_region?: string;
   timeframe?: string;
-  minimum_sample_size?: number;
-  include_trends?: boolean;
-  include_competitive_gaps?: boolean;
 }
 
 export interface IndustryPosition {
@@ -179,23 +153,6 @@ export interface IndustryPosition {
   rank_description: string;
 }
 
-export interface PerformanceGap {
-  metric_name: string;
-  campaign_value: number;
-  industry_top_10_avg: number;
-  gap_percentage: number;
-  improvement_potential: string;
-  priority: 'low' | 'medium' | 'high' | 'critical';
-}
-
-export interface IndustryTrend {
-  metric_name: string;
-  trend_direction: 'improving' | 'declining' | 'stable';
-  trend_percentage: number;
-  trend_confidence: number;
-  context: string;
-}
-
 export type PerformanceGrade = 'A+' | 'A' | 'A-' | 'B+' | 'B' | 'B-' | 'C+' | 'C' | 'C-' | 'D' | 'F';
 
 export interface BenchmarkResponse {
@@ -205,9 +162,7 @@ export interface BenchmarkResponse {
   industry_positions: IndustryPosition[];
   overall_industry_grade: PerformanceGrade;
   overall_percentile: number;
-  performance_gaps: PerformanceGap[];
   competitive_strengths: string[];
-  industry_trends: IndustryTrend[];
   competitive_positioning: string;
   market_opportunity_score: number;
   insights: AnalysisInsight[];
@@ -220,7 +175,7 @@ export interface BenchmarkResponse {
 export interface ROIRequest {
   // Manual Input (Primary)
   campaign_cost?: number;
-  sales_revenue?: number;
+  revenue?: number;
   additional_costs?: number;
   
   // Campaign Context (NEW - v3.0 enhancement)
@@ -253,6 +208,71 @@ export interface ROIResponse {
   
   // Campaign Context Insights (v3.0 enhancement)
   campaign_context?: CampaignROIContext;
+}
+
+// ========== ADVANCED ROI AGENT TYPES ==========
+// NEW: Advanced ROI with campaign-matched customer attribution
+
+export interface AdvancedROIRequest {
+  // Core fields (same as ROIRequest)
+  campaign_cost?: number;
+  revenue?: number;
+  cost_of_goods?: number;
+  additional_costs?: number;
+  
+  // Campaign context for matching
+  campaign_id?: number;
+  
+  // Enhanced file processing
+  filename?: string;
+  data_format?: 'csv' | 'excel' | 'txt';
+  
+  // Calculation type
+  calculation_type: 'simple' | 'campaign_matched';
+}
+
+export interface CustomerMatch {
+  sales_name: string;
+  matched_mailing_name: string;
+  sale_amount: number;
+  sale_date: string;
+  confidence_score: number;
+  match_method: 'name_exact' | 'name_fuzzy' | 'name_address_confirmed';
+  address_match?: boolean;
+}
+
+export interface DateRange {
+  start_date: string;
+  end_date: string;
+  duration_days: number;
+}
+
+export interface CampaignMatchedResults {
+  matched_customers: number;
+  unmatched_customers: number;
+  total_entries: number;
+  total_mailed_customers: number;
+  match_rate_percentage: number;
+  unmatched_revenue: number;
+  customer_matches: CustomerMatch[];
+  campaign_date_range: DateRange;
+  matching_confidence: number;
+}
+
+export interface AdvancedROIResponse {
+  // Core ROI Results (same as ROIResponse)
+  roi_percentage: number;
+  profit: number;
+  total_cost: number;
+  total_revenue: number;
+  explanation: string;
+  data_source: string;
+  
+  // NEW: Campaign-matched specific fields
+  campaign_matched_results?: CampaignMatchedResults;
+  optimization_recommendations: string[];
+  performance_grade?: string;
+  parsing_warnings: string[];
 }
 
 // ========== ERROR HANDLING ==========
@@ -295,9 +315,7 @@ export const apiService = {
    */
   async getClients(): Promise<Client[]> {
     try {
-      const response = await fetch(`${getAPIBaseURL()}/clients`, {
-        headers: getDefaultHeaders()
-      });
+      const response = await fetch(`${API_BASE_URL}/clients`);
       return await handleResponse<Client[]>(response);
     } catch (error) {
       if (error instanceof APIError) {
@@ -313,9 +331,7 @@ export const apiService = {
    */
   async getCampaignsByClient(clientId: number): Promise<CampaignSummary[]> {
     try {
-      const response = await fetch(`${getAPIBaseURL()}/campaigns/by-client/${clientId}`, {
-        headers: getDefaultHeaders()
-      });
+      const response = await fetch(`${API_BASE_URL}/campaigns/by-client/${clientId}`);
       return await handleResponse<CampaignSummary[]>(response);
     } catch (error) {
       if (error instanceof APIError) {
@@ -334,10 +350,8 @@ export const apiService = {
     durationTolerance: number = 2.0
   ): Promise<CampaignSummary[]> {
     try {
-      const url = `${getAPIBaseURL()}/campaigns/${campaignId}/similar-duration?duration_tolerance=${durationTolerance}`;
-      const response = await fetch(url, {
-        headers: getDefaultHeaders()
-      });
+      const url = `${API_BASE_URL}/campaigns/${campaignId}/similar-duration?duration_tolerance=${durationTolerance}`;
+      const response = await fetch(url);
       return await handleResponse<CampaignSummary[]>(response);
     } catch (error) {
       if (error instanceof APIError) {
@@ -353,9 +367,11 @@ export const apiService = {
    */
   async compareCampaigns(request: CompareRequest): Promise<CompareResponse> {
     try {
-      const response = await fetch(`${getAPIBaseURL()}/compare`, {
+      const response = await fetch(`${API_BASE_URL}/compare`, {
         method: 'POST',
-        headers: getDefaultHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(request),
       });
       return await handleResponse<CompareResponse>(response);
@@ -373,9 +389,11 @@ export const apiService = {
    */
   async benchmarkCampaign(request: BenchmarkRequest): Promise<BenchmarkResponse> {
     try {
-      const response = await fetch(`${getAPIBaseURL()}/industry-benchmark`, {
+      const response = await fetch(`${API_BASE_URL}/industry-benchmark`, {
         method: 'POST',
-        headers: getDefaultHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(request),
       });
       return await handleResponse<BenchmarkResponse>(response);
@@ -393,9 +411,11 @@ export const apiService = {
    */
   async calculateROI(request: ROIRequest): Promise<ROIResponse> {
     try {
-      const response = await fetch(`${getAPIBaseURL()}/calculate-roi`, {
+      const response = await fetch(`${API_BASE_URL}/calculate-roi`, {
         method: 'POST',
-        headers: getDefaultHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(request),
       });
       return await handleResponse<ROIResponse>(response);
@@ -433,13 +453,9 @@ export const apiService = {
         formData.append('additional_costs', additionalCosts.toString());
       }
 
-      const headers = getDefaultHeaders();
-      // Remove Content-Type for FormData - browser will set it with boundary
-      delete headers['Content-Type'];
-      
-      const response = await fetch(`${getAPIBaseURL()}/calculate-roi-file`, {
+      const response = await fetch(`${API_BASE_URL}/calculate-roi-file`, {
         method: 'POST',
-        headers: headers,
+        // Don't set Content-Type header - let browser set it with boundary for FormData
         body: formData,
       });
       return await handleResponse<ROIResponse>(response);
@@ -451,16 +467,80 @@ export const apiService = {
     }
   },
 
+  // ========== ADVANCED ROI ENDPOINTS ==========
+  // NEW: Advanced ROI with LLM-driven customer matching
+
+  /**
+   * Calculate simple Advanced ROI (enhanced version of calculateROI)
+   * Endpoint: POST /api/v1/advanced-roi/simple
+   */
+  async calculateAdvancedROISimple(
+    campaignCost: number,
+    costOfGoods: number,
+    additionalCosts: number,
+    revenue: number
+  ): Promise<AdvancedROIResponse> {
+    try {
+      const request: AdvancedROIRequest = {
+        campaign_cost: campaignCost,
+        revenue: revenue,
+        cost_of_goods: costOfGoods,
+        additional_costs: additionalCosts,
+        calculation_type: 'simple'
+      };
+
+      const response = await fetch(`${API_BASE_URL}/advanced-roi/simple`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(request),
+      });
+      return await handleResponse<AdvancedROIResponse>(response);
+    } catch (error) {
+      if (error instanceof APIError) {
+        throw error;
+      }
+      throw new APIError(`Failed to calculate Advanced ROI: ${error instanceof Error ? error.message : 'Network error'}`);
+    }
+  },
+
+  /**
+   * Calculate campaign-matched Advanced ROI with customer attribution
+   * Endpoint: POST /api/v1/advanced-roi/campaign-matched
+   */
+  async calculateAdvancedROICampaignMatched(
+    campaignId: number,
+    campaignCost: number,
+    salesFile: File
+  ): Promise<AdvancedROIResponse> {
+    try {
+      const formData = new FormData();
+      formData.append('campaign_id', campaignId.toString());
+      formData.append('campaign_cost', campaignCost.toString());
+      formData.append('sales_file', salesFile);
+
+      const response = await fetch(`${API_BASE_URL}/advanced-roi/campaign-matched`, {
+        method: 'POST',
+        // Don't set Content-Type header - let browser set it with boundary for FormData
+        body: formData,
+      });
+      return await handleResponse<AdvancedROIResponse>(response);
+    } catch (error) {
+      if (error instanceof APIError) {
+        throw error;
+      }
+      throw new APIError(`Failed to calculate campaign-matched ROI: ${error instanceof Error ? error.message : 'Network error'}`);
+    }
+  },
+
   /**
    * Health check for API availability
    * Endpoint: GET /health (if available)
    */
   async healthCheck(): Promise<{ status: string }> {
     try {
-      const baseUrl = getAPIBaseURL().replace('/api/v1', '');
-      const response = await fetch(`${baseUrl}/health`, {
-        headers: getDefaultHeaders()
-      });
+      const response = await fetch(`${API_BASE_URL.replace('/api/v1', '')}/health`);
       return await handleResponse<{ status: string }>(response);
     } catch (error) {
       throw new APIError(`API health check failed: ${error instanceof Error ? error.message : 'Network error'}`);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lightbulb, Upload, Image, BarChart3, Trophy, Target, Zap, Eye, Camera, FileText, TrendingUp, Award, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Lightbulb, Upload, Image, BarChart3, Trophy, Target, Zap, Eye, Camera, TrendingUp, Award, CheckCircle, AlertTriangle } from 'lucide-react';
 
 const Improvements: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
