@@ -487,6 +487,68 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
                   </div>
                 </div>
 
+                {simpleResults.calculatedMetrics && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-gray-900 mb-3">Calculated Metrics:</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      {simpleResults.calculatedMetrics.avgRevenuePerCustomer && (
+                        <div className="bg-white rounded-lg p-3 border border-blue-200">
+                          <p className="text-xs text-gray-600 mb-1">Avg Revenue per Customer</p>
+                          <p className="text-lg font-bold text-blue-700">${simpleResults.calculatedMetrics.avgRevenuePerCustomer.toFixed(2)}</p>
+                        </div>
+                      )}
+                      {simpleResults.calculatedMetrics.costPerLead !== undefined && (
+                        <div className="bg-white rounded-lg p-3 border border-blue-200">
+                          <p className="text-xs text-gray-600 mb-1">Cost per Lead</p>
+                          <p className="text-lg font-bold text-orange-700">${simpleResults.calculatedMetrics.costPerLead.toFixed(2)}</p>
+                        </div>
+                      )}
+                      {simpleResults.calculatedMetrics.revenuePerLead !== undefined && (
+                        <div className="bg-white rounded-lg p-3 border border-blue-200">
+                          <p className="text-xs text-gray-600 mb-1">Revenue per Lead</p>
+                          <p className="text-lg font-bold text-green-700">${simpleResults.calculatedMetrics.revenuePerLead.toFixed(2)}</p>
+                        </div>
+                      )}
+                      {simpleResults.calculatedMetrics.costPerImpression !== undefined && (
+                        <div className="bg-white rounded-lg p-3 border border-blue-200">
+                          <p className="text-xs text-gray-600 mb-1">Cost per Impression</p>
+                          <p className="text-lg font-bold text-orange-700">${simpleResults.calculatedMetrics.costPerImpression.toFixed(4)}</p>
+                        </div>
+                      )}
+                      {simpleResults.calculatedMetrics.revenuePerImpression !== undefined && (
+                        <div className="bg-white rounded-lg p-3 border border-blue-200">
+                          <p className="text-xs text-gray-600 mb-1">Revenue per Impression</p>
+                          <p className="text-lg font-bold text-green-700">${simpleResults.calculatedMetrics.revenuePerImpression.toFixed(4)}</p>
+                        </div>
+                      )}
+                      {simpleResults.calculatedMetrics.costPerEngagement !== undefined && (
+                        <div className="bg-white rounded-lg p-3 border border-blue-200">
+                          <p className="text-xs text-gray-600 mb-1">Cost per Engagement</p>
+                          <p className="text-lg font-bold text-orange-700">${simpleResults.calculatedMetrics.costPerEngagement.toFixed(2)}</p>
+                        </div>
+                      )}
+                      {simpleResults.calculatedMetrics.revenuePerEngagement !== undefined && (
+                        <div className="bg-white rounded-lg p-3 border border-blue-200">
+                          <p className="text-xs text-gray-600 mb-1">Revenue per Engagement</p>
+                          <p className="text-lg font-bold text-green-700">${simpleResults.calculatedMetrics.revenuePerEngagement.toFixed(2)}</p>
+                        </div>
+                      )}
+                      {simpleResults.calculatedMetrics.costPerMailPiece !== undefined && (
+                        <div className="bg-white rounded-lg p-3 border border-blue-200">
+                          <p className="text-xs text-gray-600 mb-1">Cost per Mail Piece</p>
+                          <p className="text-lg font-bold text-orange-700">${simpleResults.calculatedMetrics.costPerMailPiece.toFixed(2)}</p>
+                        </div>
+                      )}
+                      {simpleResults.calculatedMetrics.revenuePerMailPiece !== undefined && (
+                        <div className="bg-white rounded-lg p-3 border border-blue-200">
+                          <p className="text-xs text-gray-600 mb-1">Revenue per Mail Piece</p>
+                          <p className="text-lg font-bold text-green-700">${simpleResults.calculatedMetrics.revenuePerMailPiece.toFixed(2)}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
               </div>
             ) : (
               <div className="space-y-6">
