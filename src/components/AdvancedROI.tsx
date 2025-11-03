@@ -550,85 +550,112 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
                 )}
 
               </div>
-            ) : (
+            ) : selectedCampaign ? (
               <div className="space-y-6">
-                {/* Your ROI Section */}
-                <div className="mb-6">
-                  <h3 className="font-semibold text-gray-900 mb-4 flex items-center space-x-2">
-                    <span>Your ROI:</span>
-                  </h3>
-                  
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                      <div className="text-center">
-                        <p className="text-sm text-gray-600 mb-1">ROI Percentage</p>
-                        <p className="text-3xl font-bold text-green-700">0.0%</p>
-                        <div className="flex items-center justify-center space-x-1 mt-1">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                          <span className="text-sm font-medium text-blue-600">📈 Awaiting Data</span>
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-sm text-gray-600 mb-1">Profit</p>
-                        <p className="text-3xl font-bold text-gray-900">$0</p>
-                      </div>
+                {/* Preview: ROI Results */}
+                <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                  <div className="text-center mb-4">
+                    <p className="text-sm text-gray-600 mb-1">ROI Percentage</p>
+                    <p className="text-3xl font-bold text-gray-400">--</p>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4 text-center text-sm">
+                    <div>
+                      <p className="text-gray-600">Total Cost</p>
+                      <p className="font-semibold text-gray-400">--</p>
                     </div>
-                    
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <p className="text-gray-600">Total Cost:</p>
-                        <p className="font-semibold text-gray-900">$0</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-600">Total Revenue:</p>
-                        <p className="font-semibold text-gray-900">$0</p>
-                      </div>
+                    <div>
+                      <p className="text-gray-600">Revenue</p>
+                      <p className="font-semibold text-gray-400">--</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Profit</p>
+                      <p className="font-semibold text-gray-400">--</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Cost Breakdown */}
-                <div className="mb-6">
-                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
-                    <span>Cost Breakdown:</span>
-                  </h3>
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <div className="grid grid-cols-3 gap-4 text-sm">
-                      <div>
-                        <p className="text-gray-600">Campaign Cost:</p>
-                        <p className="font-semibold text-gray-900">$0</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-600">Cost of Goods:</p>
-                        <p className="font-semibold text-gray-900">$0</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-600">Additional Costs:</p>
-                        <p className="font-semibold text-gray-900">$0</p>
-                      </div>
+                {/* Preview: Cost Breakdown */}
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                  <h3 className="font-semibold text-gray-900 mb-3">Cost Breakdown:</h3>
+                  <div className="grid grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <p className="text-gray-600">Campaign Cost</p>
+                      <p className="font-semibold text-gray-400">--</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Cost of Goods</p>
+                      <p className="font-semibold text-gray-400">--</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Additional Costs</p>
+                      <p className="font-semibold text-gray-400">--</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Explanation */}
-                <div className="mb-6">
-                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
-                    <span>Explanation:</span>
-                  </h3>
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <p className="text-gray-700">
-                      ROI calculated: $0 revenue - $0 cost = $0 profit (0.0% ROI)
+                {/* Preview: Calculated Metrics */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h3 className="font-semibold text-gray-900 mb-3">Calculated Metrics:</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-white rounded-lg p-3 border border-blue-200">
+                      <p className="text-xs text-gray-600 mb-1">Avg Revenue per Customer</p>
+                      <p className="text-lg font-bold text-gray-400">--</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-3 border border-blue-200">
+                      <p className="text-xs text-gray-600 mb-1">Cost per Lead</p>
+                      <p className="text-lg font-bold text-gray-400">--</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-3 border border-blue-200">
+                      <p className="text-xs text-gray-600 mb-1">Revenue per Lead</p>
+                      <p className="text-lg font-bold text-gray-400">--</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-3 border border-blue-200">
+                      <p className="text-xs text-gray-600 mb-1">Cost per Impression</p>
+                      <p className="text-lg font-bold text-gray-400">--</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-3 border border-blue-200">
+                      <p className="text-xs text-gray-600 mb-1">Revenue per Impression</p>
+                      <p className="text-lg font-bold text-gray-400">--</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-3 border border-blue-200">
+                      <p className="text-xs text-gray-600 mb-1">Cost per Engagement</p>
+                      <p className="text-lg font-bold text-gray-400">--</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-3 border border-blue-200">
+                      <p className="text-xs text-gray-600 mb-1">Revenue per Engagement</p>
+                      <p className="text-lg font-bold text-gray-400">--</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-3 border border-blue-200">
+                      <p className="text-xs text-gray-600 mb-1">Cost per Mail Piece</p>
+                      <p className="text-lg font-bold text-gray-400">--</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-3 border border-blue-200">
+                      <p className="text-xs text-gray-600 mb-1">Revenue per Mail Piece</p>
+                      <p className="text-lg font-bold text-gray-400">--</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Info message */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-center space-x-2">
+                    <Target className="w-5 h-5 text-blue-600" />
+                    <p className="text-sm text-gray-700">
+                      <span className="font-semibold">Campaign selected:</span> {formatCampaignName(selectedCampaign)} - Enter your costs and revenue, then click Calculate to see results
                     </p>
                   </div>
                 </div>
-
+              </div>
+            ) : (
+              <div className="space-y-6">
                 {/* Enhanced Insights */}
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-4 flex items-center space-x-2">
                     <Lightbulb className="w-5 h-5 text-yellow-600" />
                     <span>Simple ROI Insights:</span>
                   </h3>
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-start space-x-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                       <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
@@ -639,7 +666,7 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
                         <p className="text-sm text-gray-700">Track campaign costs, cost of goods, and additional expenses for complete ROI visibility.</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start space-x-3 p-4 bg-green-50 border border-green-200 rounded-lg">
                       <div className="w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
                         2
@@ -649,7 +676,7 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
                         <p className="text-sm text-gray-700">Get immediate ROI results with detailed cost breakdown and profit analysis.</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start space-x-3 p-4 bg-purple-50 border border-purple-200 rounded-lg">
                       <div className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
                         3
