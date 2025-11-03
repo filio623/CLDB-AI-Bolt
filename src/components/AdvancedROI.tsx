@@ -229,7 +229,7 @@ const AdvancedROI: React.FC<AdvancedROIProps> = ({ selectedClient }) => {
     <div className="space-y-8">
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Advanced ROI Calculator</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">ROI Calculator</h1>
         <p className="text-gray-600">Choose between simple ROI calculation or campaign-matched customer analysis</p>
       </div>
 
