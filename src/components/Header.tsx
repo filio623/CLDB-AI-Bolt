@@ -43,9 +43,6 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, selectedClient,
     { id: 'compare', label: 'Compare Campaigns', icon: BarChart3 },
     { id: 'benchmark', label: 'Industry Benchmark', icon: Trophy },
     { id: 'advanced-roi', label: 'ROI', icon: BookmarkCheck },
-    //{ id: 'roi', label: 'Enhanced ROI', icon: TrendingUp },
-    //{ id: 'performance', label: 'Performance Review', icon: Zap },
-    //{ id: 'improvements', label: 'Improvements', icon: Target },
   ];
 
   return (
